@@ -1,0 +1,51 @@
+[alerts]
+enabled = false
+webhook_url_env = ""
+
+[alpaca]
+env_file = ".env.alpaca"
+live_base_url = "https://api.alpaca.markets"
+paper = true
+paper_base_url = "https://paper-api.alpaca.markets"
+timeout_seconds = 30
+
+[data]
+source = "yfinance_adjusted"
+symbols = ["LQD", "AGG"]
+
+[execution]
+buy_sizing = "notional"
+cash_only = true
+minimum_trade_dollars = 25.0
+minimum_trade_equity_pct = 0.0025
+order_type = "market"
+rebalance_timezone = "America/New_York"
+require_market_open_for_submit = true
+sell_sizing = "fractional_qty"
+time_in_force = "day"
+
+[paths]
+logs_dir = "live_trading/logs"
+signal_file = "live_trading/state/latest_signal.json"
+
+[safety]
+allow_unapproved_positions = false
+approved_symbols = ["NTSX", "TQQQ"]
+kill_switch_path = "live_trading/state/KILL_SWITCH"
+max_core_weight = 0.67
+max_signal_age_days = 5
+max_sleeve_weight = 0.33
+
+[signal]
+history_calendar_days = 600
+name = "lqd_agg_risk_on"
+sma_window = 150
+
+[strategy]
+cash_weight_off = 0.33
+core_symbol = "NTSX"
+core_weight = 0.67
+name = "ntsx67_tqqq33_lqd_agg_risk_on"
+sleeve_symbol = "TQQQ"
+sleeve_weight_on = 0.33
+

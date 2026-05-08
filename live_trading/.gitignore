@@ -1,0 +1,11 @@
+# Local config can point at host-specific paths.
+config.toml
+
+# Runtime state and logs.
+state/latest_signal.json
+state/KILL_SWITCH
+logs/*.jsonl
+
+# Keep examples and placeholders visible despite repo-wide JSON ignores.
+!state/latest_signal.example.json
+!logs/.gitkeep

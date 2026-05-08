@@ -1,0 +1,15 @@
+{
+  "agg_adjusted_close": 100.25,
+  "as_of": "2026-05-08",
+  "created_at_utc": "2026-05-08T20:15:00+00:00",
+  "data_source": "yfinance_adjusted",
+  "history_rows": 420,
+  "lqd_adjusted_close": 123.75,
+  "lqd_agg_ratio": 1.23441397,
+  "lqd_agg_ratio_distance": 0.02016529,
+  "lqd_agg_ratio_sma150": 1.21001234,
+  "signal_name": "lqd_agg_risk_on",
+  "signal_on": true,
+  "sma_window": 150,
+  "strategy": "ntsx67_tqqq33_lqd_agg_risk_on"
+}

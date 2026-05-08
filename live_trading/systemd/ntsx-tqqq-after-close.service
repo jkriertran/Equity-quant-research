@@ -1,0 +1,9 @@
+[Unit]
+Description=NTSX/TQQQ after-close signal job
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/ntsx-tqqq
+EnvironmentFile=/etc/ntsx-tqqq/alpaca.env
+ExecStart=/opt/ntsx-tqqq/.venv/bin/python /opt/ntsx-tqqq/live_trading/run_after_close.py --config /opt/ntsx-tqqq/live_trading/config.toml
+

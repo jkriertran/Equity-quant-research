@@ -7,6 +7,7 @@ __pycache__/
 .env.*
 .env.alpaca
 .streamlit/secrets.toml
+*.pem
 
 # Optional raw/cache exports from data vendors
 Datasets/
@@ -18,6 +19,7 @@ tiingo_data/raw/
 /*.py
 /*.md
 !/QUANT_ALPHA_RESEARCH_FRAMEWORK.md
+!/ntsx-tqqq-alpaca-build.md
 !/docs/**/*.md
 /.streamlit/
 /pine_scripts/

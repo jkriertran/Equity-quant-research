@@ -2,6 +2,10 @@
 
 This folder contains the static site version of `QUANT_ALPHA_RESEARCH_FRAMEWORK.md`.
 
+## Additional Docs
+
+- [NTSX + Tactical TQQQ Alpaca Handoff](NTSX_TQQQ_ALPACA_HANDOFF.md)
+
 ## Local Preview
 
 Open `docs/index.html` in a browser.
