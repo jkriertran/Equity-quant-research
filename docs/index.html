@@ -1,0 +1,1597 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A Beginner-Friendly Framework for Finding Quantitative Alpha</title>
+  <meta name="description" content="A class-friendly guide to quantitative alpha research, feature generation, exogenous data, and realistic backtesting.">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="site-hero">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">QQQ Alpha Research Framework</p>
+        <h1>A Beginner-Friendly Framework for Finding Quantitative Alpha</h1>
+        <p class="hero-lede">How to move from market hypotheses to clean datasets, testable features, realistic next-open backtests, and out-of-sample evidence.</p>
+        <nav class="quick-links" aria-label="Key sections">
+          <a href="#why-off-the-shelf-chart-tools-are-not-enough">Chart Tools</a>
+          <a href="#how-to-generate-features-from-raw-data">Feature Building</a>
+          <a href="#how-backtesting-should-work">Backtesting</a>
+          <a href="#practical-checklist">Checklist</a>
+        </nav>
+      </div>
+      <figure class="hero-figure">
+        <img src="assets/img/walkforward_equity.png" alt="Walk-forward equity curve from the QQQ combined selector research">
+        <figcaption>Example output from the walk-forward testing workflow.</figcaption>
+      </figure>
+    </div>
+  </header>
+
+  <section class="principles" aria-label="Core principles">
+    <div class="principles-inner">
+      <div>
+        <span class="principle-number">01</span>
+        <h2>Start With A Question</h2>
+        <p>Begin with a market behavior you can test, not an indicator that looks good on a chart.</p>
+      </div>
+      <div>
+        <span class="principle-number">02</span>
+        <h2>Build Features</h2>
+        <p>Convert raw prices, breadth, positioning, and options data into clean columns known before the trade.</p>
+      </div>
+      <div>
+        <span class="principle-number">03</span>
+        <h2>Normalize Context</h2>
+        <p>Use momentum, z-scores, percentiles, ratios, and volatility adjustment to compare market states fairly.</p>
+      </div>
+      <div>
+        <span class="principle-number">04</span>
+        <h2>Test Honestly</h2>
+        <p>Use next-open execution, costs, walk-forward selection, non-overlap rules, and out-of-sample validation.</p>
+      </div>
+    </div>
+  </section>
+
+  <main class="page-shell">
+    <aside class="toc-panel" aria-label="Table of contents">
+      <p class="toc-title">Contents</p>
+      <ol class="toc-list"></ol>
+    </aside>
+    <article class="article">
+      <h2 id="what-this-guide-is-for">What This Guide Is For</h2>
+<p>This guide explains the research framework we used in the QQQ project in plain language.</p>
+<p>The goal is to help someone understand:</p>
+<ul>
+<li>what kind of data to collect</li>
+<li>how to turn raw data into useful features</li>
+<li>why common chart indicators are not enough</li>
+<li>how to test whether a signal actually works</li>
+<li>how to avoid fooling yourself with a pretty backtest</li>
+</ul>
+<p>The big idea:</p>
+<blockquote>
+<p>Do not start with an indicator. Start with a question about market behavior, then build data that can test that question.</p>
+</blockquote>
+<p>In this project, our core question was:</p>
+<blockquote>
+<p>When QQQ pulls back, can outside market information tell us whether that pullback is a good long entry?</p>
+</blockquote>
+<p>That is different from asking:</p>
+<blockquote>
+<p>Can I draw a line on a chart and guess where price goes next?</p>
+</blockquote>
+<p>We want a repeatable process, not a visual opinion.</p>
+<h2 id="why-off-the-shelf-chart-tools-are-not-enough">Why "Off The Shelf" Chart Tools Are Not Enough</h2>
+<p>Most retail technical analysis tools are transformations of the same price series:</p>
+<ul>
+<li>MACD</li>
+<li>Bollinger Bands</li>
+<li>RSI</li>
+<li>moving-average crossovers</li>
+<li>trendlines</li>
+<li>chart patterns</li>
+<li>support and resistance lines</li>
+</ul>
+<p>These tools can be useful for describing price action, but they should not be trusted just because they look intuitive on a chart.</p>
+<p>The problem is that many of them have little to no reliable statistical significance once you test them out of sample. In plain English:</p>
+<blockquote>
+<p>They often look good on the historical chart you are staring at, but they usually do not keep working when tested on future unseen data.</p>
+</blockquote>
+<p>There are a few reasons:</p>
+<ul>
+<li>They are usually built only from the asset's own price.</li>
+<li>Many versions can be tried until one looks good.</li>
+<li>Drawing lines and patterns is subjective.</li>
+<li>A chart can make randomness look meaningful.</li>
+<li>Same-close testing often assumes fills you could not actually get.</li>
+<li>The best-looking rule is often just the best random result among many tests.</li>
+</ul>
+<p>This does not mean every indicator is useless. It means every indicator must be treated as a testable feature, not as proof.</p>
+<p>For example:</p>
+<pre><code class="language-text">Bad use:
+&quot;MACD crossed, so it is bullish.&quot;
+
+Better use:
+&quot;When MACD crossed under these exact rules, did next-open forward returns improve out of sample after costs?&quot;
+</code></pre>
+<p>In this project, we favored tools with stronger quantitative foundations:</p>
+<ul>
+<li>momentum</li>
+<li>trend following</li>
+<li>mean reversion / pullback behavior</li>
+<li>volatility normalization</li>
+<li>rolling z-scores</li>
+<li>rolling percentiles</li>
+<li>relative strength</li>
+<li>cross-asset confirmation</li>
+<li>breadth and participation</li>
+<li>positioning and options-pressure data</li>
+</ul>
+<p>These are still not magic. But they are easier to define, test, and compare.</p>
+<h2 id="the-basic-structure-of-a-quant-research-dataset">The Basic Structure of a Quant Research Dataset</h2>
+<p>A trading research dataset usually has one row per date.</p>
+<p>For this project, each row represented one QQQ trading day.</p>
+<p>Conceptually, the table looks like this:</p>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>What We Know Today</th>
+<th>What Happens Later</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025-01-02</td>
+<td>QQQ return, DXY trend, breadth, options pressure</td>
+<td>QQQ return over next 20 days</td>
+</tr>
+<tr>
+<td>2025-01-03</td>
+<td>QQQ return, DXY trend, breadth, options pressure</td>
+<td>QQQ return over next 20 days</td>
+</tr>
+</tbody>
+</table>
+<p>The left side contains features.</p>
+<p>The right side contains targets.</p>
+<h2 id="the-correct-type-of-dataset-to-pull">The Correct Type Of Dataset To Pull</h2>
+<p>Before building features, you need to make sure the dataset is appropriate for the question.</p>
+<p>For equity research, the most important mistake to avoid is using the wrong price series.</p>
+<p>There are three common price concepts:</p>
+<h3 id="raw-close">Raw Close</h3>
+<p>Raw close is the actual closing price reported that day.</p>
+<p>Example:</p>
+<pre><code class="language-text">QQQ closed at 500.
+</code></pre>
+<p>This is useful because it is close to the real price you could trade around.</p>
+<p>But raw close can create bad return calculations when there are dividends, splits, or other corporate actions.</p>
+<h3 id="adjusted-close">Adjusted Close</h3>
+<p>Adjusted close is the closing price after historical adjustments for splits and dividend distributions.</p>
+<p>In simple terms:</p>
+<pre><code class="language-text">Adjusted close tries to make the historical price series comparable through time.
+</code></pre>
+<p>Why this matters:</p>
+<ul>
+<li>A stock split should not look like a sudden 50% crash.</li>
+<li>A dividend payment should not look like a mysterious price drop.</li>
+<li>Long-term return calculations should account for distributions.</li>
+</ul>
+<p>If you calculate momentum using raw closes across a split, the signal can be completely wrong.</p>
+<p>For example:</p>
+<pre><code class="language-text">Bad:
+Price fell from 100 to 50 because of a 2-for-1 split.
+The model thinks the stock crashed 50%.
+
+Better:
+Use split-adjusted or adjusted data so the move is treated correctly.
+</code></pre>
+<p>Adjusted close is very useful for research, but remember:</p>
+<pre><code class="language-text">Adjusted close is not the exact price you traded at on that historical day.
+</code></pre>
+<p>For realistic execution, use raw open/high/low/close prices for fills and adjusted or total-return data for return calculations, depending on the test.</p>
+<h3 id="total-return">Total Return</h3>
+<p>Total return includes price change plus distributions, usually assuming dividends are reinvested.</p>
+<p>For equity and ETF backtests, this is often the preferred return concept if the vendor provides it cleanly.</p>
+<p>Example:</p>
+<pre><code class="language-text">Price return:
+QQQ goes from 100 to 105 = +5%
+
+Total return:
+QQQ goes from 100 to 105 and pays a 1% dividend = about +6%
+</code></pre>
+<p>Why total return matters:</p>
+<ul>
+<li>It measures what an investor actually earned.</li>
+<li>It prevents dividend-paying assets from looking worse than they were.</li>
+<li>It makes comparisons across assets more fair.</li>
+<li>It is especially important for bonds, dividend stocks, ETFs, and long holding periods.</li>
+</ul>
+<p>Best practice:</p>
+<pre><code class="language-text">Use total return when evaluating performance.
+Use adjusted close when total return is unavailable.
+Use raw prices for realistic entries and exits.
+Keep track of which one you are using.
+</code></pre>
+<p>For a daily QQQ study, a good starter dataset should include:</p>
+<ul>
+<li>date</li>
+<li>raw open</li>
+<li>raw high</li>
+<li>raw low</li>
+<li>raw close</li>
+<li>adjusted close or total-return return</li>
+<li>volume</li>
+<li>dividends</li>
+<li>splits</li>
+<li>ticker identifier</li>
+<li>data source</li>
+<li>timestamp showing when the data was pulled</li>
+</ul>
+<p>For a multi-stock universe, also try to include:</p>
+<ul>
+<li>delisted securities</li>
+<li>historical ticker changes</li>
+<li>shares outstanding</li>
+<li>sector / industry</li>
+<li>market cap</li>
+<li>index membership history, if testing index membership</li>
+</ul>
+<p>That last point matters because survivorship bias is a real problem.</p>
+<p>If you only test today's successful companies, the backtest quietly ignores the companies that disappeared.</p>
+<h2 id="where-to-get-market-data">Where To Get Market Data</h2>
+<p>No data source is perfect. The right choice depends on whether the work is for a class project, personal research, or professional trading.</p>
+<p>Here are common free, low-cost, and institutional options.</p>
+<h3 id="yfinance-yahoo-finance">yfinance / Yahoo Finance</h3>
+<p>yfinance is popular because it is easy to use from Python and can fetch Yahoo Finance data quickly.</p>
+<p>Pros:</p>
+<ul>
+<li>easy to install</li>
+<li>good for learning</li>
+<li>convenient for daily bars</li>
+<li>can download dividends and splits</li>
+<li>supports adjusted OHLC behavior through <code>auto_adjust</code></li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>not officially affiliated with Yahoo</li>
+<li>intended for personal and educational use</li>
+<li>can have rate limits or occasional data issues</li>
+<li>not ideal for production trading systems</li>
+<li>terms of use matter if publishing or commercializing work</li>
+</ul>
+<p>Use it for:</p>
+<pre><code class="language-text">class projects
+quick prototypes
+learning how to build features
+rough sanity checks
+</code></pre>
+<p>Be careful with:</p>
+<pre><code class="language-text">professional backtests
+large universe research
+live trading infrastructure
+</code></pre>
+<h3 id="alpaca">Alpaca</h3>
+<p>Alpaca is useful if you already have an account because it combines brokerage access with market-data APIs.</p>
+<p>Pros:</p>
+<ul>
+<li>useful API for stocks, ETFs, crypto, and options</li>
+<li>good for connecting research to paper trading</li>
+<li>free basic market-data access exists for account holders</li>
+<li>historical equity data is available</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>free/basic equity data has limitations</li>
+<li>full market coverage may require a paid plan</li>
+<li>options data can be limited by feed and subscription</li>
+<li>options history currently starts much later than long equity history</li>
+</ul>
+<p>Use it for:</p>
+<pre><code class="language-text">paper-trading workflows
+API practice
+daily equity data
+short-sample options-pressure experiments
+</code></pre>
+<p>Be careful with:</p>
+<pre><code class="language-text">assuming free data is the same as full SIP/OPRA data
+testing options strategies with a very short sample
+mixing indicative option data with real execution assumptions
+</code></pre>
+<h3 id="alpha-vantage">Alpha Vantage</h3>
+<p>Alpha Vantage is another beginner-friendly API source.</p>
+<p>Pros:</p>
+<ul>
+<li>simple API</li>
+<li>has adjusted daily data</li>
+<li>includes split and dividend fields</li>
+<li>useful for small projects</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>rate limits can be restrictive</li>
+<li>some adjusted endpoints or richer features may be premium</li>
+<li>large universe research can become slow</li>
+</ul>
+<p>Use it for:</p>
+<pre><code class="language-text">small equity studies
+learning API ingestion
+checking adjusted close, dividends, and splits
+</code></pre>
+<h3 id="fred">FRED</h3>
+<p>FRED is excellent for macroeconomic data.</p>
+<p>Examples:</p>
+<ul>
+<li>interest rates</li>
+<li>inflation</li>
+<li>unemployment</li>
+<li>credit spreads</li>
+<li>yield curve series</li>
+<li>economic activity indicators</li>
+</ul>
+<p>Pros:</p>
+<ul>
+<li>high-quality macro data</li>
+<li>free API access</li>
+<li>long history</li>
+<li>good documentation</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>many series update weekly, monthly, or quarterly</li>
+<li>some series are revised after initial release</li>
+<li>macro data often needs release-date handling</li>
+</ul>
+<p>Use it for:</p>
+<pre><code class="language-text">macro regime features
+interest-rate features
+credit and liquidity context
+</code></pre>
+<p>Be careful with:</p>
+<pre><code class="language-text">using revised data as if it was known in real time
+</code></pre>
+<p>For serious macro research, ALFRED point-in-time vintages are better than only using the latest revised series.</p>
+<h3 id="nasdaq-data-link">Nasdaq Data Link</h3>
+<p>Nasdaq Data Link has both free and premium datasets.</p>
+<p>Pros:</p>
+<ul>
+<li>broad dataset marketplace</li>
+<li>useful for alternative and institutional-style datasets</li>
+<li>API, Python, Excel, and other access methods</li>
+<li>some free datasets are available</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>many of the most useful datasets are paid</li>
+<li>each dataset has its own schema and documentation</li>
+<li>free data is better for exploration than professional deployment</li>
+</ul>
+<p>Use it for:</p>
+<pre><code class="language-text">finding alternative datasets
+fundamental data vendors
+specialized breadth, flow, or macro datasets
+</code></pre>
+<h3 id="crsp-institutional-data">CRSP / Institutional Data</h3>
+<p>CRSP is the academic gold standard for U.S. equity research.</p>
+<p>Pros:</p>
+<ul>
+<li>survivor-bias-free security history</li>
+<li>strong corporate-action handling</li>
+<li>returns with and without dividends</li>
+<li>delisting information</li>
+<li>stable permanent identifiers</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>usually available through universities or paid institutional access</li>
+<li>not as quick to start as free APIs</li>
+<li>requires more data-engineering discipline</li>
+</ul>
+<p>Use it for:</p>
+<pre><code class="language-text">serious academic equity research
+cross-sectional stock studies
+long-history backtests
+survivorship-bias-sensitive research
+</code></pre>
+<h3 id="practical-data-rule">Practical Data Rule</h3>
+<p>For a beginner project:</p>
+<pre><code class="language-text">Start with yfinance or Alpaca.
+Validate adjusted close, dividends, and splits.
+Build the research framework.
+Then upgrade the data source if the signal looks promising.
+</code></pre>
+<p>For a serious research project:</p>
+<pre><code class="language-text">Prefer point-in-time, adjusted, survivor-bias-aware data.
+Use total returns when possible.
+Store raw vendor files.
+Record exactly when and how the data was downloaded.
+</code></pre>
+<h2 id="what-is-a-feature">What Is A Feature?</h2>
+<p>A feature is just a column that describes the market at a specific point in time.</p>
+<p>Examples:</p>
+<ul>
+<li>QQQ is down 3% over the last 5 days.</li>
+<li>QQQ is 6% below its 50-day moving average.</li>
+<li>DXY is above its 200-day moving average.</li>
+<li>LQD is outperforming AGG.</li>
+<li>70% of Nasdaq-100 stocks are above their 50-day moving average.</li>
+<li>QQQ put volume is unusually high versus call volume.</li>
+</ul>
+<p>Features should be known before the trade is placed.</p>
+<p>That point matters a lot.</p>
+<p>If you trade at the next open, then your features can use information available after today's close. But they cannot use tomorrow's open, tomorrow's close, or any future return.</p>
+<h2 id="what-is-a-target">What Is A Target?</h2>
+<p>The target is what we are trying to predict, explain, or trade.</p>
+<p>For example:</p>
+<pre><code class="language-text">If I see a signal after today's close,
+and I buy QQQ tomorrow at the open,
+what is my return after 20 trading days?
+</code></pre>
+<p>That target is realistic because the trade happens after the information is known.</p>
+<p>In the QQQ project, many tests used this structure:</p>
+<pre><code class="language-text">signal after close
+enter next open
+exit after fixed number of trading days
+subtract estimated trading cost
+</code></pre>
+<p>This is much better than saying:</p>
+<pre><code class="language-text">The signal uses today's close and I magically buy at today's close.
+</code></pre>
+<p>That can accidentally create unrealistic backtests.</p>
+<h2 id="the-difference-between-price-features-and-exogenous-features">The Difference Between Price Features And Exogenous Features</h2>
+<p>Price features come from the traded asset itself.</p>
+<p>For QQQ, price features include:</p>
+<ul>
+<li>recent QQQ returns</li>
+<li>QQQ moving average distance</li>
+<li>QQQ drawdown</li>
+<li>QQQ RSI</li>
+<li>QQQ volatility</li>
+</ul>
+<p>These tell us what QQQ is doing.</p>
+<p>Exogenous features come from outside QQQ.</p>
+<p>Examples:</p>
+<ul>
+<li>DXY tells us about the dollar.</li>
+<li>LQD/AGG tells us about credit risk appetite.</li>
+<li>Nasdaq breadth tells us whether many stocks are participating.</li>
+<li>Equal-weight Nasdaq-100 versus QQQ tells us about concentration.</li>
+<li>DIX/GEX tells us about positioning.</li>
+<li>QQQ options data tells us about options pressure.</li>
+</ul>
+<p>These help us understand the environment around QQQ.</p>
+<p>That is the main reason to use them.</p>
+<p>If QQQ is falling, we want to know:</p>
+<pre><code class="language-text">Is this just a normal pullback?
+Is the dollar causing stress?
+Is credit weakening?
+Are only mega-cap stocks holding the index up?
+Are options traders aggressively buying puts?
+Is market breadth collapsing?
+</code></pre>
+<p>Those are different situations. They may have different forward returns.</p>
+<h2 id="important-clarification-about-exogenous-variables">Important Clarification About Exogenous Variables</h2>
+<p>A beginner-friendly way to think about exogenous variables is:</p>
+<pre><code class="language-text">They are outside pieces of information that describe the market environment around the asset you are trying to trade.
+</code></pre>
+<p>In panel data, each row usually represents:</p>
+<pre><code class="language-text">one asset on one date
+</code></pre>
+<p>For example:</p>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Asset</th>
+<th>Features Known Today</th>
+<th>Future Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025-01-02</td>
+<td>QQQ</td>
+<td>QQQ pullback, DXY trend, credit strength, breadth</td>
+<td>QQQ next 20-day return</td>
+</tr>
+<tr>
+<td>2025-01-02</td>
+<td>SPY</td>
+<td>SPY pullback, DXY trend, credit strength, breadth</td>
+<td>SPY next 20-day return</td>
+</tr>
+<tr>
+<td>2025-01-03</td>
+<td>QQQ</td>
+<td>QQQ pullback, DXY trend, credit strength, breadth</td>
+<td>QQQ next 20-day return</td>
+</tr>
+</tbody>
+</table>
+<p>The target is the future return you are trying to estimate.</p>
+<p>The features are the columns you know before that future return happens.</p>
+<p>Some features come from the asset itself:</p>
+<pre><code class="language-text">QQQ recent return
+QQQ distance from moving average
+QQQ volatility
+</code></pre>
+<p>Other features come from outside the asset:</p>
+<pre><code class="language-text">DXY momentum
+LQD/AGG credit ratio
+Nasdaq breadth
+option put/call pressure
+interest rates
+market-wide volatility
+</code></pre>
+<p>Those outside features are what this guide calls exogenous variables.</p>
+<p>They may be repeated across many assets on the same date. For example, the same DXY trend value could appear on every stock row for January 2 because DXY describes the market environment, not one individual stock.</p>
+<h3 id="the-key-point">The Key Point</h3>
+<p>An exogenous feature should be related to the market setup, but it must not be a disguised version of the answer.</p>
+<p>This distinction matters.</p>
+<p>If a feature has no relationship to future returns, it will not help.</p>
+<p>So we do want features that might have predictive information.</p>
+<p>But we do not want features that cheat by using the future target, revised data, or information that would not have been available at the decision time.</p>
+<p>In plain English:</p>
+<pre><code class="language-text">Good:
+This feature tells me something about the market environment before I trade.
+
+Bad:
+This feature secretly contains information from after I trade.
+</code></pre>
+<p>For example:</p>
+<pre><code class="language-text">Bad:
+Using tomorrow's QQQ return as a feature.
+
+Bad:
+Using data that was revised later but pretending it was known today.
+
+Bad:
+Using today's option volume to trade at a price before that option volume was known.
+</code></pre>
+<p>Better:</p>
+<pre><code class="language-text">DXY trend known by today's close.
+LQD/AGG relative strength known by today's close.
+Breadth data available by today's close.
+Option pressure calculated after the option market closes, then traded next open.
+</code></pre>
+<h3 id="a-useful-test">A Useful Test</h3>
+<p>Before using any exogenous variable, ask:</p>
+<ol>
+<li>What market condition does this variable represent?</li>
+<li>Was it known before the trade decision?</li>
+<li>Is it measured at the same date and frequency as the target?</li>
+<li>Does it need to be lagged because it is published later?</li>
+<li>Is it a real outside variable, or just the future return in disguise?</li>
+<li>Does the relationship make economic sense?</li>
+</ol>
+<p>For QQQ pullback research, a good exogenous question is:</p>
+<pre><code class="language-text">When QQQ is weak, does the outside market environment tell us whether that weakness is buyable?
+</code></pre>
+<p>Examples:</p>
+<pre><code class="language-text">QQQ is weak, but credit markets are stable.
+QQQ is weak, but breadth is improving.
+QQQ is weak, but DXY is not breaking higher.
+QQQ is weak, but options pressure is unusually one-sided.
+</code></pre>
+<p>The exogenous variable is not the trade by itself.</p>
+<p>It is context that helps decide whether the setup is attractive.</p>
+<h2 id="how-to-generate-features-from-raw-data">How To Generate Features From Raw Data</h2>
+<p>This is the most important part. Raw data is rarely useful by itself. You usually need to turn it into features.</p>
+<p>Below are the main feature types we used.</p>
+<h2 id="1-recent-return-features">1. Recent Return Features</h2>
+<p>Start with price.</p>
+<p>Suppose QQQ has a closing price each day.</p>
+<p>A 5-day return asks:</p>
+<pre><code class="language-text">How much has QQQ moved over the last 5 trading days?
+</code></pre>
+<p>Formula:</p>
+<pre><code class="language-text">5-day return = close today / close 5 days ago - 1
+</code></pre>
+<p>Useful windows:</p>
+<ul>
+<li>1 day</li>
+<li>3 days</li>
+<li>5 days</li>
+<li>10 days</li>
+<li>20 days</li>
+<li>63 days</li>
+<li>126 days</li>
+<li>252 days</li>
+</ul>
+<p>Why these windows?</p>
+<ul>
+<li>1-5 days capture short-term moves.</li>
+<li>20 days is about one trading month.</li>
+<li>63 days is about one quarter.</li>
+<li>252 days is about one trading year.</li>
+</ul>
+<p>In the project, these features helped define whether QQQ was pulling back, trending, or deeply oversold.</p>
+<h2 id="2-momentum-features">2. Momentum Features</h2>
+<p>Momentum asks:</p>
+<pre><code class="language-text">Has this asset been moving persistently in one direction?
+</code></pre>
+<p>Example:</p>
+<pre><code class="language-text">DXY 252-day momentum = DXY close today / DXY close 252 days ago - 1
+</code></pre>
+<p>A positive value means DXY is up over the last year.</p>
+<p>Momentum can be used on:</p>
+<ul>
+<li>QQQ</li>
+<li>SPY</li>
+<li>DXY</li>
+<li>AGG</li>
+<li>LQD</li>
+<li>gold</li>
+<li>oil</li>
+<li>volatility indexes</li>
+</ul>
+<p>Momentum is one of the better-known quantitative effects. It is not guaranteed, but it is much more testable than a hand-drawn trendline.</p>
+<h2 id="3-trend-following-features">3. Trend-Following Features</h2>
+<p>Trend following asks:</p>
+<pre><code class="language-text">Is price above or below a moving average?
+</code></pre>
+<p>Example:</p>
+<pre><code class="language-text">QQQ above 200-day moving average = 1 if QQQ close &gt; 200-day average, else 0
+</code></pre>
+<p>Another version:</p>
+<pre><code class="language-text">distance from moving average = close / moving average - 1
+</code></pre>
+<p>If QQQ is 8% below its 200-day average:</p>
+<pre><code class="language-text">distance = -0.08
+</code></pre>
+<p>This gives a clean numeric feature rather than a vague chart impression.</p>
+<h2 id="4-pullback-mean-reversion-features">4. Pullback / Mean-Reversion Features</h2>
+<p>A pullback feature asks:</p>
+<pre><code class="language-text">How far has price fallen from a recent high?
+</code></pre>
+<p>Example:</p>
+<pre><code class="language-text">20-day drawdown = close today / highest close in last 20 days - 1
+</code></pre>
+<p>If QQQ was recently 500 and is now 475:</p>
+<pre><code class="language-text">475 / 500 - 1 = -5%
+</code></pre>
+<p>This helps define the setup:</p>
+<pre><code class="language-text">QQQ is weak enough to be interesting.
+</code></pre>
+<p>But we still need context:</p>
+<pre><code class="language-text">Is this pullback buyable, or is it part of a larger breakdown?
+</code></pre>
+<p>That is where exogenous variables come in.</p>
+<h2 id="5-volatility-features">5. Volatility Features</h2>
+<p>Volatility asks:</p>
+<pre><code class="language-text">How noisy or unstable has price been recently?
+</code></pre>
+<p>Simple version:</p>
+<pre><code class="language-text">20-day realized volatility = standard deviation of daily returns over 20 days
+</code></pre>
+<p>Why it matters:</p>
+<ul>
+<li>A 2% drop means something different in a calm market than in a crisis market.</li>
+<li>Signals should often be interpreted relative to volatility.</li>
+</ul>
+<p>This leads to volatility-adjusted features.</p>
+<p>Example:</p>
+<pre><code class="language-text">volatility-adjusted return = recent return / recent volatility
+</code></pre>
+<p>That helps compare moves across calm and volatile regimes.</p>
+<h2 id="6-normalized-features">6. Normalized Features</h2>
+<p>Normalization is one of the most important tools in this project.</p>
+<p>Many raw values drift over time. A raw threshold that worked in one period may not mean the same thing later.</p>
+<p>Two common normalization tools:</p>
+<h3 id="z-score">Z-Score</h3>
+<p>A z-score asks:</p>
+<pre><code class="language-text">How unusual is today's value compared with its recent history?
+</code></pre>
+<p>Formula:</p>
+<pre><code class="language-text">z-score = (today's value - rolling average) / rolling standard deviation
+</code></pre>
+<p>Example:</p>
+<pre><code class="language-text">DIX z-score over 252 days
+</code></pre>
+<p>This tells us whether DIX is unusually high or low versus its own recent history.</p>
+<h3 id="rolling-percentile">Rolling Percentile</h3>
+<p>A rolling percentile asks:</p>
+<pre><code class="language-text">Where does today's value rank versus the last N days?
+</code></pre>
+<p>Example:</p>
+<pre><code class="language-text">If today's DXY level is higher than 90% of the last 252 days,
+its rolling percentile is 0.90.
+</code></pre>
+<p>This is often easier to explain than a z-score.</p>
+<p>Useful percentiles:</p>
+<ul>
+<li>below 0.10 = unusually low</li>
+<li>above 0.90 = unusually high</li>
+</ul>
+<p>Normalization is especially useful for:</p>
+<ul>
+<li>DIX/GEX</li>
+<li>volatility</li>
+<li>credit spreads</li>
+<li>breadth</li>
+<li>option volume</li>
+<li>dollar strength</li>
+</ul>
+<h2 id="7-relative-strength-features">7. Relative Strength Features</h2>
+<p>Relative strength compares one asset to another.</p>
+<p>Example:</p>
+<pre><code class="language-text">LQD / AGG ratio
+</code></pre>
+<p>LQD is investment-grade corporate bonds. AGG is broad bonds.</p>
+<p>If LQD is outperforming AGG, credit conditions may be healthier. If LQD is underperforming AGG, investors may be avoiding credit risk.</p>
+<p>Another example:</p>
+<pre><code class="language-text">equal-weight Nasdaq-100 / QQQ
+</code></pre>
+<p>If equal-weight Nasdaq is outperforming QQQ, strength may be broad. If QQQ is outperforming equal-weight Nasdaq, the index may be driven by a few mega-cap names.</p>
+<p>Relative features are useful because they often describe market structure better than a single price series.</p>
+<h2 id="8-breadth-features">8. Breadth Features</h2>
+<p>Breadth asks:</p>
+<pre><code class="language-text">How many stocks are participating?
+</code></pre>
+<p>Examples:</p>
+<ul>
+<li>percent of Nasdaq-100 stocks above their 20-day moving average</li>
+<li>percent above 50-day moving average</li>
+<li>percent above 200-day moving average</li>
+<li>advance/decline line</li>
+<li>new highs minus new lows</li>
+</ul>
+<p>Why this matters:</p>
+<pre><code class="language-text">QQQ can look strong because a few mega-cap names are strong,
+even if many stocks underneath are weak.
+</code></pre>
+<p>Breadth features help reveal whether the index move is broad or narrow.</p>
+<h2 id="9-concentration-features">9. Concentration Features</h2>
+<p>Concentration asks:</p>
+<pre><code class="language-text">Is the index being driven by a small number of large stocks?
+</code></pre>
+<p>Examples:</p>
+<ul>
+<li>top-5 weight</li>
+<li>top-10 weight</li>
+<li>equal-weight Nasdaq-100 versus QQQ</li>
+<li>QQQ excluding top holdings</li>
+</ul>
+<p>If QQQ is up but equal-weight Nasdaq is weak, the rally may be narrow.</p>
+<p>If QQQ is down but breadth is improving, the pullback may be less dangerous.</p>
+<p>These are hypotheses. They still need to be tested.</p>
+<h2 id="10-positioning-features">10. Positioning Features</h2>
+<p>Positioning data tries to describe how investors or dealers are positioned.</p>
+<p>In this project:</p>
+<ul>
+<li>DIX was used as one positioning measure.</li>
+<li>GEX was used as another.</li>
+</ul>
+<p>Raw DIX/GEX values were tested, but we also created normalized versions:</p>
+<ul>
+<li>rolling z-scores</li>
+<li>rolling percentiles</li>
+<li>changes over 5, 20, or 63 days</li>
+</ul>
+<p>The reason:</p>
+<pre><code class="language-text">A raw GEX value may not mean the same thing in every market regime.
+</code></pre>
+<p>Normalization helps ask:</p>
+<pre><code class="language-text">Is GEX unusually high or low compared with its own recent history?
+</code></pre>
+<h2 id="11-option-pressure-features">11. Option-Pressure Features</h2>
+<p>Options data is more advanced, but the feature logic is still understandable.</p>
+<p>Raw data:</p>
+<ul>
+<li>each QQQ option contract</li>
+<li>date</li>
+<li>call or put</li>
+<li>strike</li>
+<li>expiration</li>
+<li>volume</li>
+<li>price</li>
+</ul>
+<p>From that, we generated daily features.</p>
+<p>Examples:</p>
+<h3 id="putcall-volume-ratio">Put/Call Volume Ratio</h3>
+<pre><code class="language-text">put volume / call volume
+</code></pre>
+<p>High values can mean more put activity relative to call activity.</p>
+<h3 id="putcall-premium-ratio">Put/Call Premium Ratio</h3>
+<pre><code class="language-text">put premium traded / call premium traded
+</code></pre>
+<p>This weighs the dollar value of options traded, not just contract count.</p>
+<h3 id="dte-buckets">DTE Buckets</h3>
+<p>DTE means days to expiration.</p>
+<p>We grouped option volume by time to expiration:</p>
+<ul>
+<li>0-7 days</li>
+<li>8-14 days</li>
+<li>15-30 days</li>
+<li>31-60 days</li>
+<li>61-90 days</li>
+</ul>
+<p>Why?</p>
+<p>Short-dated option activity can mean something different from longer-dated option activity.</p>
+<h3 id="atm-and-otm-volume">ATM and OTM Volume</h3>
+<p>ATM means at-the-money.</p>
+<p>OTM means out-of-the-money.</p>
+<p>We measured how much option volume was near the current QQQ price versus further away.</p>
+<p>This can help distinguish:</p>
+<ul>
+<li>ordinary hedging</li>
+<li>speculative put buying</li>
+<li>short-dated event trading</li>
+<li>broad options activity</li>
+</ul>
+<p>Important limitation:</p>
+<p>Our accessible Alpaca options sample currently starts in 2025 and has 336 daily feature rows. That is useful for exploratory analysis, but not enough to make strong claims.</p>
+<h2 id="how-to-combine-features-into-a-signal">How To Combine Features Into A Signal</h2>
+<p>A simple signal has two parts:</p>
+<pre><code class="language-text">setup + confirmation
+</code></pre>
+<p>In this project:</p>
+<pre><code class="language-text">setup = QQQ is weak or pulling back
+confirmation = outside market data says the setup is attractive
+</code></pre>
+<p>Example in plain English:</p>
+<pre><code class="language-text">QQQ has pulled back sharply,
+AND
+credit/risk appetite has not broken down.
+</code></pre>
+<p>Another example:</p>
+<pre><code class="language-text">QQQ is oversold,
+AND
+Nasdaq breadth is improving.
+</code></pre>
+<p>Another:</p>
+<pre><code class="language-text">QQQ is weak,
+AND
+option put pressure is unusually high or low.
+</code></pre>
+<p>The exact thresholds are not guessed by eye. They are generated from the training data using quantiles, fixed cutoffs, or normalized levels.</p>
+<h2 id="why-we-use-simple-rules-first">Why We Use Simple Rules First</h2>
+<p>It is tempting to jump straight to machine learning.</p>
+<p>But simple rules are valuable because:</p>
+<ul>
+<li>they are easier to understand</li>
+<li>they are easier to debug</li>
+<li>they are less likely to overfit</li>
+<li>they create a baseline</li>
+<li>they force us to explain the economic logic</li>
+</ul>
+<p>A neural network or complex model should be compared against simple baselines.</p>
+<p>In this project, complex models like autoencoders and TCNs were treated as regime detectors, not magic trading machines.</p>
+<p>The question was:</p>
+<pre><code class="language-text">Does the model add anything beyond simple intermarket signals like DXY momentum or LQD/AGG?
+</code></pre>
+<p>That is the right standard.</p>
+<h2 id="how-backtesting-should-work">How Backtesting Should Work</h2>
+<p>A backtest should copy the real decision process as closely as possible.</p>
+<h3 id="step-1-signal-time">Step 1: Signal Time</h3>
+<p>Decide when the signal is known.</p>
+<p>For daily data:</p>
+<pre><code class="language-text">Signal is known after today's close.
+</code></pre>
+<h3 id="step-2-entry-time">Step 2: Entry Time</h3>
+<p>Use a realistic entry.</p>
+<pre><code class="language-text">Enter at tomorrow's open.
+</code></pre>
+<h3 id="step-3-exit-rule">Step 3: Exit Rule</h3>
+<p>Use a fixed rule.</p>
+<p>Examples:</p>
+<ul>
+<li>exit after 5 trading days</li>
+<li>exit after 20 trading days</li>
+<li>exit after 60 trading days</li>
+</ul>
+<p>Do not choose the exit after seeing the result.</p>
+<h3 id="step-4-costs">Step 4: Costs</h3>
+<p>Subtract trading costs.</p>
+<p>Even small costs matter because many strategies have small average edges.</p>
+<h3 id="step-5-avoid-overlapping-trades">Step 5: Avoid Overlapping Trades</h3>
+<p>If a signal fires every day for a week, do not count that as seven independent trades if all seven trades are basically the same market event.</p>
+<p>The cleaner approach:</p>
+<pre><code class="language-text">Enter one trade.
+Ignore new signals until that trade exits.
+</code></pre>
+<p>This gives a more honest trade count.</p>
+<h2 id="train-validation-test-and-walk-forward">Train, Validation, Test, And Walk-Forward</h2>
+<p>The biggest danger in quant research is overfitting.</p>
+<p>Overfitting means:</p>
+<pre><code class="language-text">The rule learned the past, not the market.
+</code></pre>
+<p>To fight this, split history into periods.</p>
+<p>Example:</p>
+<table>
+<thead>
+<tr>
+<th>Period</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Train</td>
+<td>Find candidate rules</td>
+</tr>
+<tr>
+<td>Validation</td>
+<td>Choose among candidates</td>
+</tr>
+<tr>
+<td>Test / OOS</td>
+<td>Evaluate final behavior</td>
+</tr>
+</tbody>
+</table>
+<p>OOS means out of sample.</p>
+<p>It is the data the strategy did not get to use when choosing rules.</p>
+<h2 id="walk-forward-testing">Walk-Forward Testing</h2>
+<p>Walk-forward testing is even more realistic.</p>
+<p>It works like this:</p>
+<pre><code class="language-text">Use the last few years to choose a rule.
+Trade the next year.
+Move forward.
+Repeat.
+</code></pre>
+<p>This simulates how a strategy would be updated over time.</p>
+<p>It also prevents a common mistake:</p>
+<pre><code class="language-text">choosing one rule using the full history, then pretending it was known all along
+</code></pre>
+<h2 id="multiple-testing-the-hidden-trap">Multiple Testing: The Hidden Trap</h2>
+<p>If you test thousands of rules, some will look good by luck.</p>
+<p>This is one of the biggest traps in trading research.</p>
+<p>Example:</p>
+<pre><code class="language-text">Test 10,000 random rules.
+Some will look amazing.
+That does not mean they are real.
+</code></pre>
+<p>To control this, we used:</p>
+<ul>
+<li>minimum trade counts</li>
+<li>validation periods</li>
+<li>out-of-sample periods</li>
+<li>walk-forward testing</li>
+<li>non-overlapping trades</li>
+<li>multiple-comparison controls</li>
+<li>comparisons against simple baselines</li>
+</ul>
+<p>The best-looking rule is not always the best rule. The best rule is the one that survives the most honest tests.</p>
+<h2 id="from-research-signal-to-live-monitoring-pipeline">From Research Signal To Live Monitoring Pipeline</h2>
+<p>Finding a signal in a backtest is not the end.</p>
+<p>It is the beginning of a production problem.</p>
+<p>Once a signal looks promising, it needs to become a repeatable pipeline.</p>
+<p>Think of it like this:</p>
+<pre><code class="language-text">data pull
+data validation
+feature generation
+signal calculation
+trade decision
+execution
+performance tracking
+drift monitoring
+review / retraining
+</code></pre>
+<p>This is similar to ML-ops, but for trading signals.</p>
+<p>The goal is not just to create a model.</p>
+<p>The goal is to keep asking:</p>
+<pre><code class="language-text">Is the signal still behaving like it did in the backtest?
+</code></pre>
+<h3 id="what-to-monitor">What To Monitor</h3>
+<p>At minimum, monitor:</p>
+<ul>
+<li>missing data</li>
+<li>delayed data</li>
+<li>schema changes</li>
+<li>extreme feature values</li>
+<li>feature distribution changes</li>
+<li>signal frequency</li>
+<li>trade count</li>
+<li>average return per trade</li>
+<li>win rate</li>
+<li>drawdown</li>
+<li>slippage versus assumption</li>
+<li>live returns versus backtest expectations</li>
+</ul>
+<p>The signal can fail even if the code still runs.</p>
+<p>That is why monitoring matters.</p>
+<h3 id="feature-drift">Feature Drift</h3>
+<p>Feature drift means the input data no longer looks like the data used during research.</p>
+<p>Example:</p>
+<pre><code class="language-text">DIX values are now much higher or lower than the historical range used in training.
+</code></pre>
+<p>Another example:</p>
+<pre><code class="language-text">QQQ option volume explodes because short-dated options become more popular.
+</code></pre>
+<p>If a feature drifts, thresholds from the old backtest may stop meaning the same thing.</p>
+<p>This is one reason rolling z-scores and rolling percentiles are helpful.</p>
+<p>They adapt better than fixed raw thresholds.</p>
+<h3 id="signal-drift">Signal Drift</h3>
+<p>Signal drift means the strategy behavior changes.</p>
+<p>Examples:</p>
+<ul>
+<li>the signal used to fire 20 times per year, but now fires 100 times</li>
+<li>average holding-period return falls below historical expectations</li>
+<li>drawdowns become deeper than expected</li>
+<li>slippage is much worse than assumed</li>
+<li>the signal only works in one asset but not related assets</li>
+</ul>
+<p>This does not automatically mean the signal is dead.</p>
+<p>But it means the signal needs review.</p>
+<h3 id="a-simple-monitoring-table">A Simple Monitoring Table</h3>
+<p>Create a daily or weekly monitoring table like this:</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Question</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Data freshness</td>
+<td>Did every source update on time?</td>
+</tr>
+<tr>
+<td>Data quality</td>
+<td>Are there missing or impossible values?</td>
+</tr>
+<tr>
+<td>Feature drift</td>
+<td>Are feature distributions changing?</td>
+</tr>
+<tr>
+<td>Signal frequency</td>
+<td>Is the rule firing too often or too rarely?</td>
+</tr>
+<tr>
+<td>Performance drift</td>
+<td>Are live returns matching the backtest range?</td>
+</tr>
+<tr>
+<td>Execution drift</td>
+<td>Are actual fills worse than expected?</td>
+</tr>
+<tr>
+<td>Regime drift</td>
+<td>Is the current market unlike the training sample?</td>
+</tr>
+</tbody>
+</table>
+<p>If a signal is important enough to trade, it is important enough to monitor.</p>
+<h2 id="ml-techniques-for-market-regime-clustering">ML Techniques For Market Regime Clustering</h2>
+<p>Machine learning can help identify market regimes, but it should be used carefully.</p>
+<p>The goal is not:</p>
+<pre><code class="language-text">Use a neural network because it sounds advanced.
+</code></pre>
+<p>The goal is:</p>
+<pre><code class="language-text">Group similar market environments,
+then test whether those environments have different forward returns.
+</code></pre>
+<p>In regime research, the model usually should not directly say:</p>
+<pre><code class="language-text">Buy QQQ tomorrow.
+</code></pre>
+<p>It should first help answer:</p>
+<pre><code class="language-text">What kind of market are we in?
+</code></pre>
+<p>Then the backtest asks:</p>
+<pre><code class="language-text">Does this QQQ setup perform differently in this regime?
+</code></pre>
+<h3 id="k-means-clustering">K-Means Clustering</h3>
+<p>K-means groups days into clusters based on feature similarity.</p>
+<p>Example features:</p>
+<ul>
+<li>QQQ recent return</li>
+<li>QQQ volatility</li>
+<li>DXY momentum</li>
+<li>LQD/AGG trend</li>
+<li>breadth percentile</li>
+<li>option put/call ratio percentile</li>
+</ul>
+<p>Plain-English interpretation:</p>
+<pre><code class="language-text">These days look similar to each other across several market variables.
+</code></pre>
+<p>Pros:</p>
+<ul>
+<li>easy to understand</li>
+<li>fast</li>
+<li>good baseline</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>clusters can be unstable</li>
+<li>assumes simple cluster shapes</li>
+<li>needs scaled features</li>
+</ul>
+<h3 id="gaussian-mixture-models">Gaussian Mixture Models</h3>
+<p>Gaussian mixture models are like a softer version of clustering.</p>
+<p>Instead of forcing each day into one bucket, they estimate probabilities.</p>
+<p>Example:</p>
+<pre><code class="language-text">Today is 70% like regime A and 30% like regime B.
+</code></pre>
+<p>This can be useful because markets often transition gradually.</p>
+<h3 id="hidden-markov-models">Hidden Markov Models</h3>
+<p>Hidden Markov models are designed for sequences.</p>
+<p>They assume the market moves through hidden states, such as:</p>
+<ul>
+<li>calm bull market</li>
+<li>volatile rally</li>
+<li>risk-off selloff</li>
+<li>recovery</li>
+</ul>
+<p>The useful idea is that today's regime is related to yesterday's regime.</p>
+<p>That makes them more natural for time series than ordinary clustering.</p>
+<h3 id="autoencoders">Autoencoders</h3>
+<p>An autoencoder is a neural network that compresses data into a smaller representation, then tries to reconstruct the original input.</p>
+<p>The compressed representation can reveal patterns.</p>
+<p>Example:</p>
+<pre><code class="language-text">Start with 50 market features.
+Compress them into 2 or 3 latent dimensions.
+Cluster the compressed representation.
+Test whether the clusters have different forward returns.
+</code></pre>
+<p>Autoencoders can be useful when you have many related features.</p>
+<p>But they need a high bar because they can easily find patterns that look interesting but do not trade well.</p>
+<h3 id="sequence-models">Sequence Models</h3>
+<p>Markets are sequences, not independent rows.</p>
+<p>Sequence models try to learn from the order of observations.</p>
+<p>Examples:</p>
+<ul>
+<li>temporal convolutional networks</li>
+<li>recurrent neural networks</li>
+<li>LSTMs / GRUs</li>
+<li>transformer-style time-series models</li>
+</ul>
+<p>For a QQQ regime problem, a sequence model might look at the last 60 trading days of features and estimate the next-period return or regime.</p>
+<p>The important question is:</p>
+<pre><code class="language-text">Does the sequence model add information beyond simple baselines like momentum, trend, and normalized cross-asset features?
+</code></pre>
+<p>If not, the simpler model is usually better.</p>
+<h3 id="how-to-test-regime-clusters">How To Test Regime Clusters</h3>
+<p>Do not stop after drawing a nice cluster chart.</p>
+<p>Test the clusters:</p>
+<ol>
+<li>Build features using only past information.</li>
+<li>Fit the clustering model on the training period.</li>
+<li>Assign regimes to the test period without refitting on the future.</li>
+<li>Measure forward returns by regime.</li>
+<li>Test whether a trading setup improves in specific regimes.</li>
+<li>Compare against simple baselines.</li>
+<li>Repeat through walk-forward splits.</li>
+</ol>
+<p>The cluster is not alpha by itself.</p>
+<p>The cluster only matters if it improves a decision.</p>
+<h2 id="a-simple-feature-building-recipe">A Simple Feature-Building Recipe</h2>
+<p>For any new dataset, use this process.</p>
+<h3 id="step-1-ask-what-the-dataset-represents">Step 1: Ask What The Dataset Represents</h3>
+<p>Examples:</p>
+<pre><code class="language-text">DXY = dollar strength
+LQD/AGG = credit risk appetite
+Breadth = participation
+Options volume = positioning or hedging pressure
+</code></pre>
+<h3 id="step-2-decide-the-time-grain">Step 2: Decide The Time Grain</h3>
+<p>For this project:</p>
+<pre><code class="language-text">one row per QQQ trading day
+</code></pre>
+<p>Everything must be aligned to that daily calendar.</p>
+<h3 id="step-3-convert-raw-values-into-features">Step 3: Convert Raw Values Into Features</h3>
+<p>For every raw series, consider:</p>
+<ul>
+<li>recent return</li>
+<li>moving-average distance</li>
+<li>rolling z-score</li>
+<li>rolling percentile</li>
+<li>relative ratio</li>
+<li>change over 5/20/63 days</li>
+<li>volatility-adjusted value</li>
+</ul>
+<h3 id="step-4-check-data-availability">Step 4: Check Data Availability</h3>
+<p>Ask:</p>
+<ul>
+<li>When does the data start?</li>
+<li>How often is it missing?</li>
+<li>Was it known at the time?</li>
+<li>Is it revised later?</li>
+<li>Does it need to be lagged?</li>
+</ul>
+<h3 id="step-5-test-it-as-a-confirmation-filter">Step 5: Test It As A Confirmation Filter</h3>
+<p>Do not ask:</p>
+<pre><code class="language-text">Can this feature predict everything?
+</code></pre>
+<p>Ask:</p>
+<pre><code class="language-text">When QQQ is in a specific setup, does this feature improve the forward return distribution?
+</code></pre>
+<p>That is a much more realistic research question.</p>
+<h2 id="practical-checklist">Practical Checklist</h2>
+<p>Use this checklist before trusting any signal:</p>
+<ol>
+<li>Can I define the signal without looking at a chart?</li>
+<li>Is every feature known before the trade?</li>
+<li>Is the entry price realistic?</li>
+<li>Did I subtract costs?</li>
+<li>Did I test out of sample?</li>
+<li>Did I avoid overlapping trade inflation?</li>
+<li>Did I compare against a simple baseline?</li>
+<li>Did I test enough trades?</li>
+<li>Did I account for trying many rules?</li>
+<li>Does the result make economic sense?</li>
+</ol>
+<p>If the answer is no, the signal is not ready.</p>
+<h2 id="how-to-vibe-code-this-research-with-codex">How To Vibe Code This Research With Codex</h2>
+<p>"Vibe coding" quant research does not mean skipping rigor.</p>
+<p>It means using Codex to move faster while you stay responsible for the research question, data quality, and validation standard.</p>
+<p>Codex is especially helpful for:</p>
+<ul>
+<li>turning a vague trading idea into a testable hypothesis</li>
+<li>writing data fetchers and join scripts</li>
+<li>creating feature-generation pipelines</li>
+<li>running backtests across many candidate rules</li>
+<li>checking for lookahead bias and unrealistic execution assumptions</li>
+<li>summarizing results into a report or GitHub Pages site</li>
+<li>converting repeated workflows into reusable skills</li>
+</ul>
+<p>The important habit is to ask Codex for evidence, not just code.</p>
+<p>Weak prompt:</p>
+<pre><code class="language-text">Find me a profitable QQQ strategy.
+</code></pre>
+<p>Better prompt:</p>
+<pre><code class="language-text">Build a next-open walk-forward test for QQQ pullback entries.
+Use only features known after today's close.
+Compare against a simple baseline.
+Report trade count, non-overlap returns, costs, and out-of-sample performance.
+Flag leakage risks.
+</code></pre>
+<h3 id="a-good-codex-research-loop">A Good Codex Research Loop</h3>
+<p>Use this loop:</p>
+<ol>
+<li>State the hypothesis in plain English.</li>
+<li>Ask Codex to inspect the available files and schemas.</li>
+<li>Build one clean feature table.</li>
+<li>Add data-quality checks.</li>
+<li>Generate simple baseline rules first.</li>
+<li>Backtest with realistic next-open execution.</li>
+<li>Split train/test or use walk-forward testing.</li>
+<li>Ask Codex to review the backtest for bias.</li>
+<li>Save results as tables and plots.</li>
+<li>Convert repeated steps into skills.</li>
+</ol>
+<p>The point is not to let Codex "guess the answer."</p>
+<p>The point is to make the research process reproducible.</p>
+<h3 id="skills-make-codex-more-useful">Skills Make Codex More Useful</h3>
+<p>A skill is a reusable instruction file that tells Codex how to behave for a specific kind of task.</p>
+<p>Instead of explaining the same process every time, you can create a <code>SKILL.md</code> file once and reuse it.</p>
+<p>For this kind of project, useful skills include:</p>
+<ul>
+<li>quant research framing</li>
+<li>market data ingestion</li>
+<li>data-quality auditing</li>
+<li>backtest review</li>
+<li>market regime modeling</li>
+<li>signal monitoring and ML-ops</li>
+<li>GitHub publishing</li>
+</ul>
+<p>Below are complete <code>SKILL.md</code> snippets a classmate could copy into their own Codex skills folder.</p>
+<p>They are intentionally short. A good skill should guide Codex without filling the context window with unnecessary detail.</p>
+<h3 id="skill-snippet-quant-alpha-research">Skill Snippet: Quant Alpha Research</h3>
+<pre><code class="language-markdown">---
+name: quant-alpha-research
+description: Use when turning a market hypothesis into testable datasets, features, signal rules, backtests, or research reports for equities, ETFs, cross-asset signals, options pressure, or market regimes.
+---
+
+# Quant Alpha Research
+
+You help convert trading ideas into reproducible quantitative research.
+
+## Workflow
+
+1. Restate the hypothesis in plain English.
+2. Define the traded asset, universe, date range, holding period, and target return.
+3. Identify which data is known before the trade and which data would leak the future.
+4. Build simple baseline features before complex models.
+5. Prefer total-return data when available, adjusted close when total return is unavailable, and raw prices for realistic fills.
+6. Create features using momentum, trend, pullback, volatility, normalization, relative strength, breadth, positioning, and exogenous variables.
+7. Test with train/test or walk-forward splits.
+8. Report out-of-sample performance, trade count, costs, drawdown, and robustness.
+9. State caveats clearly. Never present a backtest as a guarantee.
+
+## Guardrails
+
+- Do not use future data in features.
+- Do not optimize on the full sample and call it out-of-sample.
+- Do not trust chart patterns or off-the-shelf indicators unless they survive statistical testing.
+- Prefer simple, interpretable baselines before neural networks.
+- Save datasets, plots, and reports to files instead of dumping large outputs into chat.
+
+## Output
+
+End with:
+
+- what was tested
+- what data was used
+- what assumptions were made
+- what passed or failed
+- what should be tested next
+</code></pre>
+<h3 id="skill-snippet-market-data-engineer">Skill Snippet: Market Data Engineer</h3>
+<pre><code class="language-markdown">---
+name: market-data-engineer
+description: Use when pulling, validating, joining, or documenting market datasets such as OHLCV, adjusted close, total return, fundamentals, breadth, options, macro, or alternative data.
+---
+
+# Market Data Engineer
+
+You build clean, reproducible market-data pipelines.
+
+## Workflow
+
+1. Identify the dataset grain: daily, intraday, option contract, ticker-date, or macro release date.
+2. Confirm the required columns: date, symbol, open, high, low, close, adjusted close or total return, volume, dividends, splits, and source metadata.
+3. Preserve raw vendor files before transforming them.
+4. Normalize dates, symbols, time zones, and trading calendars.
+5. Validate missing values, duplicate keys, impossible prices, stale rows, and schema changes.
+6. Lag data when the real-world release time requires it.
+7. Join datasets only after confirming that the join key and timestamp logic are correct.
+8. Write a data dictionary for every generated feature file.
+
+## Guardrails
+
+- Never paste API keys or secrets into code, reports, or chat.
+- Do not assume adjusted close and total return are the same thing.
+- Do not use revised macro data as if it was available in real time.
+- Do not silently forward-fill important missing data.
+- Record the vendor, endpoint, pull date, and transformation script.
+
+## Output
+
+Produce:
+
+- raw-data path
+- cleaned-data path
+- row count
+- date range
+- schema
+- quality issues
+- recommended next transformation
+</code></pre>
+<h3 id="skill-snippet-backtest-auditor">Skill Snippet: Backtest Auditor</h3>
+<pre><code class="language-markdown">---
+name: backtest-auditor
+description: Use when reviewing a trading backtest for lookahead bias, survivorship bias, unrealistic fills, overlapping trades, costs, overfitting, and out-of-sample validity.
+---
+
+# Backtest Auditor
+
+You review trading backtests like a skeptical research lead.
+
+## Checklist
+
+1. Confirm when each feature is known.
+2. Confirm entry and exit prices are realistic.
+3. Prefer next-open execution when the signal is calculated after the close.
+4. Check whether returns use total return, adjusted close, or raw prices.
+5. Verify transaction costs, slippage, and borrow or financing assumptions.
+6. Check for overlapping trade inflation.
+7. Check train/test, validation, and walk-forward design.
+8. Check whether many rules were tested and whether multiple-comparison risk was addressed.
+9. Compare the strategy against simple baselines.
+10. Separate in-sample discovery from out-of-sample evidence.
+
+## Common Failure Modes
+
+- buying at the same close used to create the signal
+- using future constituents or surviving tickers only
+- using revised data without release-date handling
+- selecting the best rule from thousands of tests
+- reporting high Sharpe with too few trades
+- ignoring days when the signal failed to fetch data
+
+## Output
+
+Lead with the biggest risks first.
+
+For each issue, include:
+
+- severity
+- why it matters
+- where it appears
+- how to fix or retest it
+</code></pre>
+<h3 id="skill-snippet-market-regime-ml">Skill Snippet: Market Regime ML</h3>
+<pre><code class="language-markdown">---
+name: market-regime-ml
+description: Use when testing clustering, autoencoders, hidden Markov models, temporal convolutional networks, or other ML models for market regime detection in trading research.
+---
+
+# Market Regime ML
+
+You use machine learning to identify market regimes, not to create black-box trading claims.
+
+## Workflow
+
+1. Define the regime question in plain English.
+2. Build only point-in-time features known before the trade.
+3. Scale or normalize features before clustering.
+4. Start with simple baselines: k-means, Gaussian mixture models, or Hidden Markov Models.
+5. Use autoencoders only when feature dimensionality is high enough to justify compression.
+6. Use sequence models only when the order of observations is central to the hypothesis.
+7. Fit models on training data and assign regimes to test data without peeking ahead.
+8. Test whether regimes improve a trading decision, not whether the chart looks interesting.
+9. Compare against simple momentum, trend, volatility, and cross-asset baselines.
+
+## Guardrails
+
+- Do not cluster on future returns.
+- Do not refit on the full sample before evaluating test results.
+- Do not treat colorful cluster plots as evidence of alpha.
+- Do not use neural networks without a simple baseline.
+
+## Output
+
+Report:
+
+- model type
+- features used
+- train/test split
+- number of regimes
+- forward returns by regime
+- whether the regime improves a specific setup
+- whether it beats simple baselines
+</code></pre>
+<h3 id="skill-snippet-signal-monitoring-ml-ops">Skill Snippet: Signal Monitoring ML-Ops</h3>
+<pre><code class="language-markdown">---
+name: signal-monitoring-mlops
+description: Use when moving a research signal into scheduled production, monitoring data quality, feature drift, signal drift, execution drift, or live performance decay.
+---
+
+# Signal Monitoring ML-Ops
+
+You turn a research signal into a monitored production workflow.
+
+## Workflow
+
+1. Define the daily schedule: data pull, validation, feature build, signal calculation, and report generation.
+2. Add data freshness checks for every source.
+3. Add schema checks for every input file.
+4. Track feature distributions versus the research sample.
+5. Track signal frequency versus the backtest range.
+6. Track live or paper-traded fills versus assumed fills.
+7. Track performance by trade, month, and regime.
+8. Alert when drift or missing data makes the signal unreliable.
+9. Keep a decision log explaining when the signal was changed, paused, or retired.
+
+## Drift Checks
+
+Monitor:
+
+- missing rows
+- stale data
+- outlier values
+- rolling z-score distribution
+- rolling percentile distribution
+- signal count
+- trade count
+- win rate
+- average return
+- drawdown
+- slippage
+
+## Guardrails
+
+- Do not trade when required data is missing.
+- Do not silently change thresholds after live underperformance.
+- Do not retrain without preserving the old model and old results.
+- Do not confuse paper-trading success with production execution quality.
+
+## Output
+
+Produce a short monitoring report with:
+
+- green/yellow/red status
+- failed checks
+- latest signal state
+- recent performance
+- recommended action
+</code></pre>
+<h3 id="skill-snippet-github-research-publisher">Skill Snippet: GitHub Research Publisher</h3>
+<pre><code class="language-markdown">---
+name: github-research-publisher
+description: Use when preparing a quant research project for GitHub, GitHub Pages, a class submission, or a shareable research artifact.
+---
+
+# GitHub Research Publisher
+
+You package research so someone else can understand and reproduce it.
+
+## Workflow
+
+1. Identify which files are meant to be shared.
+2. Exclude secrets, raw vendor data, cache folders, and large private datasets.
+3. Create or update a clear README or GitHub Pages site.
+4. Include the research question, dataset description, feature logic, backtest assumptions, results, and caveats.
+5. Add instructions for regenerating reports or pages.
+6. Check that links, images, and charts render.
+7. Commit only the intended files.
+8. Push to GitHub only after confirming the repository and branch.
+
+## Guardrails
+
+- Never commit API keys, `.env` files, credentials, or paid vendor data.
+- Do not stage the whole working tree if unrelated files exist.
+- Do not publish a private research folder without confirming the target repository and visibility.
+- Prefer a small shareable docs site over a messy full research dump.
+
+## Output
+
+Report:
+
+- files changed
+- files intentionally excluded
+- local validation performed
+- branch
+- commit hash
+- published URL or remaining blocker
+</code></pre>
+<h2 id="useful-data-source-links">Useful Data-Source Links</h2>
+<p>These are good starting points for learning what each provider offers:</p>
+<ul>
+<li><a href="https://docs.alpaca.markets/docs/about-market-data-api">Alpaca Market Data API</a></li>
+<li><a href="https://docs.alpaca.markets/docs/options-market-data">Alpaca Options Market Data</a></li>
+<li><a href="https://ranaroussi.github.io/yfinance/">yfinance documentation</a></li>
+<li><a href="https://www.alphavantage.co/documentation/">Alpha Vantage API documentation</a></li>
+<li><a href="https://fred.stlouisfed.org/docs/api/fred/">FRED API documentation</a></li>
+<li><a href="https://docs.data.nasdaq.com/">Nasdaq Data Link documentation</a></li>
+<li><a href="https://www.crsp.org/research/crsp-us-stock-databases/">CRSP U.S. Stock Databases</a></li>
+</ul>
+<h2 id="final-takeaway">Final Takeaway</h2>
+<p>Do not rely on chart patterns, MACD, Bollinger Bands, or hand-drawn lines unless they survive the same statistical testing as everything else.</p>
+<p>The better workflow is:</p>
+<pre><code class="language-text">Start with a market hypothesis.
+Collect data that describes that hypothesis.
+Turn raw data into clean features.
+Normalize those features.
+Use simple rules first.
+Backtest with realistic execution.
+Validate out of sample.
+Only trust what survives.
+</code></pre>
+<p>The strongest lesson is:</p>
+<blockquote>
+<p>More data is useful only when it helps describe a real market state. It does not automatically create alpha.</p>
+</blockquote>
+<p>The best framework is not "find the perfect indicator." It is:</p>
+<blockquote>
+<p>Define a QQQ setup, then use economically meaningful exogenous features to decide whether that setup is worth trading.</p>
+</blockquote>
+    </article>
+  </main>
+
+  <section class="chart-strip" aria-label="Example research chart">
+    <div class="chart-strip-inner">
+      <div>
+        <p class="eyebrow">Why normalization matters</p>
+        <h2>Raw values are often less useful than context-aware values.</h2>
+        <p>Rolling z-scores and rolling percentiles help ask whether a variable is unusual versus its own recent history.</p>
+      </div>
+      <figure>
+        <img src="assets/img/raw_vs_normalized_robust_score.png" alt="Comparison of raw versus normalized DIX and GEX pullback tests">
+      </figure>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <p>Educational research guide. Not investment advice. Generated from <code>QUANT_ALPHA_RESEARCH_FRAMEWORK.md</code>.</p>
+  </footer>
+
+  <script>
+    const tocList = document.querySelector(".toc-list");
+    const headings = Array.from(document.querySelectorAll(".article h2"));
+
+    headings.forEach((heading) => {
+      const item = document.createElement("li");
+      const link = document.createElement("a");
+      link.href = `#${heading.id}`;
+      link.textContent = heading.textContent;
+      item.appendChild(link);
+      tocList.appendChild(item);
+    });
+  </script>
+</body>
+</html>

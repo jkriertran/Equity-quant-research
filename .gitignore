@@ -1,0 +1,32 @@
+.DS_Store
+__pycache__/
+*.pyc
+
+# Local secrets
+.env
+.env.*
+.env.alpaca
+.streamlit/secrets.toml
+
+# Optional raw/cache exports from data vendors
+Datasets/
+analysis_output/
+analysis_output_before_*/
+tiingo_data/raw/
+
+# Local/generated research artifacts that should not be part of the public page repo
+/*.py
+/*.md
+!/QUANT_ALPHA_RESEARCH_FRAMEWORK.md
+!/docs/**/*.md
+/.streamlit/
+/pine_scripts/
+/*.png
+*.csv
+*.json
+*.parquet
+*.pkl
+*.joblib
+*.sqlite
+*.db
+streamlit-dashboard-*.png
