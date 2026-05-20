@@ -26,6 +26,8 @@ tiingo_data/raw/
 /*.png
 *.csv
 *.json
+!/docs/**/*.csv
+!/docs/**/*.json
 *.parquet
 *.pkl
 *.joblib

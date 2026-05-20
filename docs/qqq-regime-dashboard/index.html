@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>QQQ Macro Regime Nowcasting Dashboard</title>
+  <style>
+:root {
+  --bg: #f5f5f2;
+  --panel: #ffffff;
+  --ink: #151515;
+  --muted: #606064;
+  --line: #d7d8d2;
+  --green: #16866f;
+  --amber: #b98716;
+  --orange: #d6652d;
+  --red: #bd3d35;
+  --blue: #2e6f9e;
+  --violet: #6754b8;
+  --shadow: 0 10px 28px rgba(20, 20, 20, 0.08);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--bg);
+  font-family: Avenir Next, Aptos, Helvetica Neue, Helvetica, sans-serif;
+  font-size: 15px;
+  line-height: 1.45;
+}
+main {
+  width: min(1440px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 26px 0 48px;
+}
+.masthead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 24px;
+  align-items: end;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 18px;
+}
+.masthead h1 {
+  margin: 0;
+  font-family: Charter, Georgia, serif;
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.masthead p, .section p, .current-strip p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  max-width: 780px;
+}
+.timestamp {
+  text-align: right;
+  font-family: SFMono-Regular, Consolas, monospace;
+  color: var(--muted);
+  font-size: 12px;
+}
+.eyebrow {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--muted);
+  letter-spacing: 0;
+}
+.current-strip {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 18px;
+  align-items: stretch;
+  margin: 22px 0;
+  padding: 22px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+.current-strip h1 {
+  margin: 4px 0 0;
+  font-family: Charter, Georgia, serif;
+  font-size: 28px;
+  letter-spacing: 0;
+}
+.regime-pill, .status-badge, .regime-dot {
+  border-radius: 999px;
+}
+.regime-pill {
+  display: inline-block;
+  padding: 5px 10px;
+  font-family: Avenir Next, Aptos, Helvetica Neue, Helvetica, sans-serif;
+  font-size: 18px;
+  color: #fff;
+}
+.risk-on { background: var(--green); }
+.fragile { background: var(--amber); }
+.tightening { background: var(--orange); }
+.stress { background: var(--red); }
+.neutral { background: var(--blue); }
+.readout-box {
+  border-left: 4px solid var(--orange);
+  padding: 16px;
+  background: #f8f8f6;
+}
+.readout-box span, .readout-box small {
+  display: block;
+  color: var(--muted);
+}
+.readout-box strong {
+  display: block;
+  margin: 6px 0;
+  font-family: Charter, Georgia, serif;
+  font-size: 34px;
+}
+.metric-grid, .comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+  gap: 12px;
+  margin: 18px 0;
+}
+.reading-guide {
+  display: grid;
+  grid-template-columns: 240px repeat(3, minmax(180px, 1fr));
+  gap: 12px;
+  align-items: stretch;
+  margin: 18px 0 24px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.reading-guide h2 {
+  margin: 2px 0 0;
+  font-family: Charter, Georgia, serif;
+  font-size: 23px;
+  letter-spacing: 0;
+}
+.reading-guide article {
+  padding: 14px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: 6px;
+}
+.reading-guide strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+.reading-guide span {
+  color: var(--muted);
+}
+.metric {
+  min-height: 118px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: 6px;
+  border-top: 4px solid var(--blue);
+}
+.metric.risk-on { border-top-color: var(--green); background: var(--panel); color: var(--ink); }
+.metric.fragile { border-top-color: var(--amber); background: var(--panel); color: var(--ink); }
+.metric.tightening { border-top-color: var(--orange); background: var(--panel); color: var(--ink); }
+.metric.stress { border-top-color: var(--red); background: var(--panel); color: var(--ink); }
+.metric-label {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.metric-value {
+  margin-top: 8px;
+  font-family: Charter, Georgia, serif;
+  font-size: 28px;
+  font-weight: 700;
+}
+.metric-note {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.section {
+  margin: 22px 0;
+  padding-top: 6px;
+}
+.section h2 {
+  margin: 2px 0 12px;
+  font-family: Charter, Georgia, serif;
+  font-size: 23px;
+  letter-spacing: 0;
+}
+.table-note {
+  margin: -4px 0 12px;
+  color: var(--muted);
+  max-width: 850px;
+}
+.split-section {
+  display: grid;
+  grid-template-columns: 330px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+}
+.compact-section {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  column-gap: 18px;
+  align-items: center;
+}
+.compact-section h2 { margin-bottom: 0; }
+.dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--panel);
+  border: 1px solid var(--line);
+}
+.dashboard-table th {
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: #ededeb;
+}
+.dashboard-table th, .dashboard-table td {
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+.dashboard-table td span {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+}
+.horizon-table td:nth-child(n+2) { width: 27%; }
+.prob-row {
+  display: grid;
+  grid-template-columns: 165px minmax(120px, 1fr) 54px;
+  gap: 10px;
+  align-items: center;
+}
+.horizon-table .prob-row {
+  grid-template-columns: 0 minmax(100px, 1fr) 54px;
+}
+.prob-track, .edge-track {
+  height: 10px;
+  background: #e5e5e1;
+  border: 1px solid var(--line);
+}
+.prob-fill, .edge-fill {
+  height: 100%;
+  background: var(--blue);
+}
+.prob-fill.risk-on { background: var(--green); }
+.prob-fill.fragile { background: var(--amber); }
+.prob-fill.tightening { background: var(--orange); }
+.prob-fill.stress { background: var(--red); }
+.prob-fill.accent { background: var(--violet); }
+.edge-fill.toward-switch { background: var(--amber); }
+.edge-fill.switch-side { background: var(--red); }
+.edge-fill.stay-side { background: var(--green); }
+.edge-fill.away { background: var(--blue); }
+.status-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  color: #fff !important;
+  font-size: 11px !important;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+.status-badge.toward-switch { background: var(--amber); }
+.status-badge.switch-side { background: var(--red); }
+.status-badge.stay-side { background: var(--green); }
+.status-badge.away { background: var(--blue); }
+.status-badge.unavailable { background: var(--muted); }
+.regime-dot {
+  display: inline-block !important;
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.quality-strip {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  border-top: 2px solid var(--ink);
+  border-bottom: 1px solid var(--line);
+  padding: 12px 0;
+  margin: 18px 0 24px;
+}
+.quality-strip span {
+  padding: 8px 10px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.plot-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 22px;
+}
+figure {
+  margin: 0;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 10px;
+}
+figcaption {
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+footer {
+  margin-top: 26px;
+  color: var(--muted);
+  font-size: 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+@media (max-width: 980px) {
+  main { width: min(100% - 24px, 760px); }
+  .masthead, .current-strip, .split-section, .compact-section, .reading-guide { grid-template-columns: 1fr; }
+  .timestamp { text-align: left; }
+  .metric-grid, .comparison-grid, .plot-grid { grid-template-columns: 1fr 1fr; }
+  .prob-row { grid-template-columns: 120px minmax(80px, 1fr) 50px; }
+  .dashboard-table { font-size: 13px; }
+}
+@media (max-width: 640px) {
+  main { width: min(100% - 16px, 560px); padding-top: 16px; }
+  .masthead h1 { font-size: 28px; }
+  .current-strip h1 { font-size: 23px; }
+  .metric-grid, .comparison-grid, .plot-grid { grid-template-columns: 1fr; }
+  .dashboard-table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <header class="masthead">
+      <div>
+        <div class="eyebrow">QQQ macro regime nowcast</div>
+        <h1>Market State, Transition Risk, And Edge Signals</h1>
+        <p>A descriptive dashboard for reading the current QQQ regime and the indicators that historically sat near regime changes.</p>
+      </div>
+      <div class="timestamp">
+        <div>Primary data date</div>
+        <strong>2026-05-08</strong>
+      </div>
+    </header>
+    <section class="current-strip"><div><div class="eyebrow">Primary nowcast</div><h1>QQQ is in <span class="regime-pill tightening">Macro Tightening</span></h1><p>As of 2026-05-08, the weekly model is deep inside its current cluster: confidence 100.0%, boundary score 0.0%, main-horizon transition risk 13.0%.</p></div><div class="readout-box"><span>Next-state risk group</span><strong>95.7%</strong><small>Tightening or stress at the main horizon</small></div></section>
+    <section class="quality-strip"><span>Model checks: <strong>9/9</strong></span><span>Scenario checks: <strong>5/5</strong></span><span>Caveat: descriptive nowcast, not a trading rule</span></section>
+    <section class="metric-grid"><article class="metric neutral"><div class="metric-label">Main transition risk</div><div class="metric-value">13.0%</div><div class="metric-note">13 weeks</div></article><article class="metric neutral"><div class="metric-label">Boundary score</div><div class="metric-value">0.0%</div><div class="metric-note">Classification ambiguity, not market risk</div></article><article class="metric neutral"><div class="metric-label">Sahm realtime</div><div class="metric-value">0.13</div><div class="metric-note">Trigger at 0.50</div></article><article class="metric neutral"><div class="metric-label">Sahm trigger</div><div class="metric-value">0</div><div class="metric-note">1 means triggered</div></article><article class="metric risk-on"><div class="metric-label">QQQ 13w return</div><div class="metric-value">16.7%</div><div class="metric-note">Price state</div></article><article class="metric neutral"><div class="metric-label">QQQ drawdown</div><div class="metric-value">0.0%</div><div class="metric-note">From 52w high</div></article><article class="metric fragile"><div class="metric-label">NDX above 200d</div><div class="metric-value">57.4%</div><div class="metric-note">Breadth</div></article><article class="metric stress"><div class="metric-label">HY OAS z</div><div class="metric-value">-0.70</div><div class="metric-note">Credit stress</div></article></section>
+    <section class="reading-guide"><div><div class="eyebrow">Nowcast reading</div><h2>Three Separate Signals</h2></div><article><strong>Boundary score</strong><span>0.0% classification ambiguity. Low means the model sees the current row as clearly inside one cluster.</span></article><article><strong>Transition risk</strong><span>13.0% historical chance of leaving the current regime over 13 weeks.</span></article><article><strong>Switch pressure</strong><span>10 switch-side and 2 toward-switch rows. This is feature-level similarity to past regime changes.</span></article></section>
+    <section class="section split-section"><div><div class="eyebrow">Cross-check</div><h2>Weekly vs Monthly</h2><p>Weekly and monthly grains disagree, so treat the read as horizon-sensitive.</p></div><div class="comparison-grid"><article class="metric tightening"><div class="metric-label">Weekly</div><div class="metric-value">Macro Tightening</div><div class="metric-note">13.0% transition risk</div></article><article class="metric risk-on"><div class="metric-label">Monthly</div><div class="metric-value">Risk On Growth</div><div class="metric-note">60.4% transition risk</div></article><article class="metric neutral"><div class="metric-label">Agreement</div><div class="metric-value">Horizon split</div><div class="metric-note">Current-state comparison</div></article></div></section>
+    <section class="section"><div class="section-heading"><div><div class="eyebrow">Path probabilities</div><h2>Next-Regime Map</h2></div></div><table class="dashboard-table horizon-table"><thead><tr><th>Horizon</th><th>Transition</th><th>Risk-on or fragile</th><th>Tightening or stress</th></tr></thead><tbody><tr><td>1 week</td><td><div class="prob-row"><span></span><div class="prob-track"><div class="prob-fill accent" style="width:1.6%"></div></div><strong>1.6%</strong></div></td><td><div class="prob-row"><span></span><div class="prob-track"><div class="prob-fill risk-on" style="width:0.4%"></div></div><strong>0.4%</strong></div></td><td><div class="prob-row"><span></span><div class="prob-track"><div class="prob-fill stress" style="width:99.6%"></div></div><strong>99.6%</strong></div></td></tr><tr><td>4 weeks</td><td><div class="prob-row"><span></span><div class="prob-track"><div class="prob-fill accent" style="width:5.4%"></div></div><strong>5.4%</strong></div></td><td><div class="prob-row"><span></span><div class="prob-track"><div class="prob-fill risk-on" style="width:1.0%"></div></div><strong>1.0%</strong></div></td><td><div class="prob-row"><span></span><div class="prob-track"><div class="prob-fill stress" style="width:99.0%"></div></div><strong>99.0%</strong></div></td></tr><tr><td>13 weeks</td><td><div class="prob-row"><span></span><div class="prob-track"><div class="prob-fill accent" style="width:13.0%"></div></div><strong>13.0%</strong></div></td><td><div class="prob-row"><span></span><div class="prob-track"><div class="prob-fill risk-on" style="width:4.3%"></div></div><strong>4.3%</strong></div></td><td><div class="prob-row"><span></span><div class="prob-track"><div class="prob-fill stress" style="width:95.7%"></div></div><strong>95.7%</strong></div></td></tr><tr><td>26 weeks</td><td><div class="prob-row"><span></span><div class="prob-track"><div class="prob-fill accent" style="width:18.8%"></div></div><strong>18.8%</strong></div></td><td><div class="prob-row"><span></span><div class="prob-track"><div class="prob-fill risk-on" style="width:9.5%"></div></div><strong>9.5%</strong></div></td><td><div class="prob-row"><span></span><div class="prob-track"><div class="prob-fill stress" style="width:90.5%"></div></div><strong>90.5%</strong></div></td></tr></tbody></table></section>
+    <section class="section compact-section"><div><div class="eyebrow">Posterior probabilities</div><h2>Current Cluster Membership</h2></div><div class="probability-panel"><div class="prob-row"><span>Risk On Growth</span><div class="prob-track"><div class="prob-fill risk-on" style="width:0.0%"></div></div><strong>0.0%</strong></div><div class="prob-row"><span>Fragile Growth</span><div class="prob-track"><div class="prob-fill fragile" style="width:0.0%"></div></div><strong>0.0%</strong></div><div class="prob-row"><span>Macro Tightening</span><div class="prob-track"><div class="prob-fill tightening" style="width:100.0%"></div></div><strong>100.0%</strong></div><div class="prob-row"><span>Risk Off Stress</span><div class="prob-track"><div class="prob-fill stress" style="width:0.0%"></div></div><strong>0.0%</strong></div></div></section>
+    <section class="section"><div class="section-heading"><div><div class="eyebrow">Regime edge monitor</div><h2>Features Closest To A Switch Pattern</h2></div></div><p class="table-note">This table measures stay-vs-switch similarity, not bullish-vs-bearish risk. Switch-side means the latest value is at or beyond the historical average for observations that changed regimes.</p><table class="dashboard-table edge-table"><thead><tr><th>Feature</th><th>Latest</th><th>Stay avg</th><th>Switch avg</th><th>Switch pressure</th><th>Read</th></tr></thead><tbody><tr><td><strong>Policy rate change, 13w</strong><span>macro_rates</span></td><td>-0.010</td><td>0.106</td><td>-0.088</td><td><div class="edge-track"><div class="edge-fill toward-switch" style="width:59.7%"></div></div><small>60%</small></td><td><span class="status-badge toward-switch">toward switch</span><span>moving toward the historical switch average</span></td></tr><tr><td><strong>Unemployment z-score</strong><span>macro_growth</span></td><td>0.519</td><td>-1.151</td><td>-0.501</td><td><div class="edge-track"><div class="edge-fill switch-side" style="width:100.0%"></div></div><small>100%</small></td><td><span class="status-badge switch-side">switch side</span><span>at or beyond the historical switch average</span></td></tr><tr><td><strong>Equal weight vs QQQ trend</strong><span>breadth_concentration</span></td><td>0.384</td><td>0.795</td><td>0.698</td><td><div class="edge-track"><div class="edge-fill switch-side" style="width:100.0%"></div></div><small>100%</small></td><td><span class="status-badge switch-side">switch side</span><span>at or beyond the historical switch average</span></td></tr><tr><td><strong>PCE inflation change, 13w</strong><span>macro_growth</span></td><td>-0.012</td><td>-0.001</td><td>0.002</td><td><div class="edge-track"><div class="edge-fill away" style="width:0.0%"></div></div><small>0%</small></td><td><span class="status-badge away">away</span><span>on the opposite side of the stay average</span></td></tr><tr><td><strong>HY spread change, 13w</strong><span>macro_credit</span></td><td>-0.060</td><td>-0.222</td><td>0.041</td><td><div class="edge-track"><div class="edge-fill toward-switch" style="width:61.7%"></div></div><small>62%</small></td><td><span class="status-badge toward-switch">toward switch</span><span>moving toward the historical switch average</span></td></tr><tr><td><strong>NFCI chg 13p</strong><span>macro_credit</span></td><td>0.056</td><td>-0.022</td><td>0.019</td><td><div class="edge-track"><div class="edge-fill switch-side" style="width:100.0%"></div></div><small>100%</small></td><td><span class="status-badge switch-side">switch side</span><span>at or beyond the historical switch average</span></td></tr><tr><td><strong>dgs2 level z</strong><span>macro_rates</span></td><td>-0.055</td><td>0.753</td><td>0.190</td><td><div class="edge-track"><div class="edge-fill switch-side" style="width:100.0%"></div></div><small>100%</small></td><td><span class="status-badge switch-side">switch side</span><span>at or beyond the historical switch average</span></td></tr><tr><td><strong>QQQ drawdown, 52w</strong><span>qqq_state</span></td><td>0.000</td><td>-0.028</td><td>-0.015</td><td><div class="edge-track"><div class="edge-fill switch-side" style="width:100.0%"></div></div><small>100%</small></td><td><span class="status-badge switch-side">switch side</span><span>at or beyond the historical switch average</span></td></tr><tr><td><strong>Real-time Sahm Rule</strong><span>macro_growth</span></td><td>0.130</td><td>-0.007</td><td>0.050</td><td><div class="edge-track"><div class="edge-fill switch-side" style="width:100.0%"></div></div><small>100%</small></td><td><span class="status-badge switch-side">switch side</span><span>at or beyond the historical switch average</span></td></tr><tr><td><strong>lqd agg ratio dist sma26p</strong><span>cross_asset</span></td><td>-0.000</td><td>0.005</td><td>0.001</td><td><div class="edge-track"><div class="edge-fill switch-side" style="width:100.0%"></div></div><small>100%</small></td><td><span class="status-badge switch-side">switch side</span><span>at or beyond the historical switch average</span></td></tr></tbody></table></section>
+    <section class="section"><div class="eyebrow">Historical base rates</div><h2>Regime Behavior</h2><table class="dashboard-table"><thead><tr><th>Regime</th><th>Frequency</th><th>Avg episode</th><th>Main fwd return</th><th>Hit rate</th></tr></thead><tbody><tr><td><span class="regime-dot risk-on"></span>Risk On Growth</td><td>9.6%</td><td>22.2</td><td>6.7%</td><td>88.3%</td></tr><tr><td><span class="regime-dot fragile"></span>Fragile Growth</td><td>11.8%</td><td>9.1</td><td>5.6%</td><td>72.1%</td></tr><tr><td><span class="regime-dot tightening"></span>Macro Tightening</td><td>67.2%</td><td>59.6</td><td>3.4%</td><td>71.3%</td></tr><tr><td><span class="regime-dot stress"></span>Risk Off Stress</td><td>11.4%</td><td>8.2</td><td>3.1%</td><td>65.4%</td></tr></tbody></table></section>
+    <section class="section"><div class="eyebrow">Asset-class leaderboard</div><h2>Risk-Adjusted History In Macro Tightening</h2><p class="table-note">Sorted by average 13 weeks forward return divided by its historical volatility inside the current regime. This ranks historical behavior; it is not an allocation target.</p><table class="dashboard-table"><thead><tr><th>Rank</th><th>Asset class</th><th>Avg fwd return</th><th>Fwd vol</th><th>Return / vol</th><th>Hit rate</th><th>Worst fwd return</th></tr></thead><tbody><tr><td>1</td><td><strong>Cash / Fed Funds Proxy</strong><span>cash carry proxy</span></td><td>0.5%</td><td>0.5%</td><td>1.02</td><td>100.0%</td><td>0.0%</td></tr><tr><td>2</td><td><strong>QQQ / Growth Equity</strong><span>price proxy</span></td><td>3.4%</td><td>7.0%</td><td>0.48</td><td>71.3%</td><td>-19.5%</td></tr><tr><td>3</td><td><strong>SPY / Broad US Equity</strong><span>price proxy</span></td><td>2.6%</td><td>5.6%</td><td>0.47</td><td>72.9%</td><td>-28.2%</td></tr><tr><td>4</td><td><strong>AGG / Core Bonds</strong><span>price proxy</span></td><td>0.8%</td><td>1.9%</td><td>0.43</td><td>70.2%</td><td>-6.9%</td></tr><tr><td>5</td><td><strong>Gold</strong><span>price proxy</span></td><td>3.0%</td><td>7.8%</td><td>0.38</td><td>64.3%</td><td>-22.7%</td></tr><tr><td>6</td><td><strong>LQD / IG Credit</strong><span>price proxy</span></td><td>1.0%</td><td>2.9%</td><td>0.33</td><td>66.8%</td><td>-15.9%</td></tr><tr><td>7</td><td><strong>Oil</strong><span>price proxy</span></td><td>1.1%</td><td>17.8%</td><td>0.06</td><td>54.6%</td><td>-68.6%</td></tr><tr><td>8</td><td><strong>DXY / Dollar Exposure</strong><span>price proxy</span></td><td>0.2%</td><td>3.3%</td><td>0.05</td><td>52.1%</td><td>-9.7%</td></tr></tbody></table></section>
+    <section class="plot-grid"><figure><figcaption>Regime timeline</figcaption><img src="plots/qqq_regime_timeline_weekly.png" alt="QQQ weekly regime timeline"></figure><figure><figcaption>Boundary score</figcaption><img src="plots/qqq_boundary_score_weekly.png" alt="QQQ weekly boundary score"></figure><figure><figcaption>Weekly transition matrix</figcaption><img src="plots/qqq_transition_heatmap_13p_weekly.png" alt="Weekly transition heatmap"></figure><figure><figcaption>Monthly transition matrix</figcaption><img src="plots/qqq_transition_heatmap_3p_monthly.png" alt="Monthly transition heatmap"></figure></section>
+    <section class="section">
+  <div class="eyebrow">Published data</div>
+  <h2>CSV Downloads</h2>
+  <p class="table-note">These are the generated study outputs copied with this static dashboard. They support inspection and reproducibility; they are not live data feeds.</p>
+  <table class="dashboard-table">
+    <thead><tr><th>File</th><th>Bytes</th></tr></thead>
+    <tbody><tr><td><a href="data/fred_macro_audit.csv">fred_macro_audit.csv</a></td><td>1,434</td></tr><tr><td><a href="data/qqq_macro_regime_asset_leaderboard_monthly.csv">qqq_macro_regime_asset_leaderboard_monthly.csv</a></td><td>6,675</td></tr><tr><td><a href="data/qqq_macro_regime_asset_leaderboard_weekly.csv">qqq_macro_regime_asset_leaderboard_weekly.csv</a></td><td>6,711</td></tr><tr><td><a href="data/qqq_macro_regime_current_state_monthly.csv">qqq_macro_regime_current_state_monthly.csv</a></td><td>1,286</td></tr><tr><td><a href="data/qqq_macro_regime_current_state_weekly.csv">qqq_macro_regime_current_state_weekly.csv</a></td><td>1,382</td></tr><tr><td><a href="data/qqq_macro_regime_daily_input_audit_monthly.csv">qqq_macro_regime_daily_input_audit_monthly.csv</a></td><td>25,665</td></tr><tr><td><a href="data/qqq_macro_regime_daily_input_audit_weekly.csv">qqq_macro_regime_daily_input_audit_weekly.csv</a></td><td>25,665</td></tr><tr><td><a href="data/qqq_macro_regime_edge_features_monthly.csv">qqq_macro_regime_edge_features_monthly.csv</a></td><td>67,525</td></tr><tr><td><a href="data/qqq_macro_regime_edge_features_weekly.csv">qqq_macro_regime_edge_features_weekly.csv</a></td><td>59,978</td></tr><tr><td><a href="data/qqq_macro_regime_edge_monitor_monthly.csv">qqq_macro_regime_edge_monitor_monthly.csv</a></td><td>3,726</td></tr><tr><td><a href="data/qqq_macro_regime_edge_monitor_weekly.csv">qqq_macro_regime_edge_monitor_weekly.csv</a></td><td>3,947</td></tr><tr><td><a href="data/qqq_macro_regime_feature_audit_monthly.csv">qqq_macro_regime_feature_audit_monthly.csv</a></td><td>6,473</td></tr><tr><td><a href="data/qqq_macro_regime_feature_audit_weekly.csv">qqq_macro_regime_feature_audit_weekly.csv</a></td><td>6,625</td></tr><tr><td><a href="data/qqq_macro_regime_features_monthly.csv">qqq_macro_regime_features_monthly.csv</a></td><td>382,391</td></tr><tr><td><a href="data/qqq_macro_regime_features_weekly.csv">qqq_macro_regime_features_weekly.csv</a></td><td>1,690,913</td></tr><tr><td><a href="data/qqq_macro_regime_model_checks_monthly.csv">qqq_macro_regime_model_checks_monthly.csv</a></td><td>806</td></tr><tr><td><a href="data/qqq_macro_regime_model_checks_weekly.csv">qqq_macro_regime_model_checks_weekly.csv</a></td><td>864</td></tr><tr><td><a href="data/qqq_macro_regime_model_diagnostics_monthly.csv">qqq_macro_regime_model_diagnostics_monthly.csv</a></td><td>153</td></tr><tr><td><a href="data/qqq_macro_regime_model_diagnostics_weekly.csv">qqq_macro_regime_model_diagnostics_weekly.csv</a></td><td>155</td></tr><tr><td><a href="data/qqq_macro_regime_model_features_monthly.csv">qqq_macro_regime_model_features_monthly.csv</a></td><td>983</td></tr><tr><td><a href="data/qqq_macro_regime_model_features_weekly.csv">qqq_macro_regime_model_features_weekly.csv</a></td><td>1,042</td></tr><tr><td><a href="data/qqq_macro_regime_panel_monthly.csv">qqq_macro_regime_panel_monthly.csv</a></td><td>1,933,333</td></tr><tr><td><a href="data/qqq_macro_regime_panel_weekly.csv">qqq_macro_regime_panel_weekly.csv</a></td><td>8,361,766</td></tr><tr><td><a href="data/qqq_macro_regime_raw_summary_monthly.csv">qqq_macro_regime_raw_summary_monthly.csv</a></td><td>1,821</td></tr><tr><td><a href="data/qqq_macro_regime_raw_summary_weekly.csv">qqq_macro_regime_raw_summary_weekly.csv</a></td><td>1,867</td></tr><tr><td><a href="data/qqq_macro_regime_scenario_checks_monthly.csv">qqq_macro_regime_scenario_checks_monthly.csv</a></td><td>1,098</td></tr><tr><td><a href="data/qqq_macro_regime_scenario_checks_weekly.csv">qqq_macro_regime_scenario_checks_weekly.csv</a></td><td>1,137</td></tr><tr><td><a href="data/qqq_macro_regime_states_monthly.csv">qqq_macro_regime_states_monthly.csv</a></td><td>32,143</td></tr><tr><td><a href="data/qqq_macro_regime_states_weekly.csv">qqq_macro_regime_states_weekly.csv</a></td><td>162,720</td></tr><tr><td><a href="data/qqq_macro_regime_summary_monthly.csv">qqq_macro_regime_summary_monthly.csv</a></td><td>1,933</td></tr><tr><td><a href="data/qqq_macro_regime_summary_weekly.csv">qqq_macro_regime_summary_weekly.csv</a></td><td>1,950</td></tr><tr><td><a href="data/qqq_macro_regime_targets_monthly.csv">qqq_macro_regime_targets_monthly.csv</a></td><td>29,999</td></tr><tr><td><a href="data/qqq_macro_regime_targets_weekly.csv">qqq_macro_regime_targets_weekly.csv</a></td><td>133,041</td></tr><tr><td><a href="data/qqq_macro_regime_transition_probabilities_monthly.csv">qqq_macro_regime_transition_probabilities_monthly.csv</a></td><td>3,415</td></tr><tr><td><a href="data/qqq_macro_regime_transition_probabilities_weekly.csv">qqq_macro_regime_transition_probabilities_weekly.csv</a></td><td>3,412</td></tr></tbody>
+  </table>
+</section>
+<footer>
+      This is regime description and nowcasting. It estimates historical similarity, transition base rates, and edge features; it is not a direct prediction model or trading system.
+    </footer>
+  </main>
+</body>
+</html>

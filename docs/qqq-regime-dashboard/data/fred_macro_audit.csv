@@ -1,0 +1,22 @@
+series_id,description,source,rows,first_date,last_date,status
+DGS2,2Y Treasury yield,fred,5598,2004-01-02,2026-05-18,ok
+DGS10,10Y Treasury yield,fred,5598,2004-01-02,2026-05-18,ok
+DFII10,10Y TIPS real yield,fred,5598,2004-01-02,2026-05-18,ok
+T5YIE,5Y inflation breakeven,fred,5599,2004-01-02,2026-05-19,ok
+T10YIE,10Y inflation breakeven,fred,5599,2004-01-02,2026-05-19,ok
+DFF,effective fed funds rate,fred,8174,2004-01-01,2026-05-18,ok
+FEDFUNDS,federal funds target/rate,fred,268,2004-01-01,2026-04-01,ok
+CPIAUCSL,CPI all urban consumers,fred,267,2004-01-01,2026-04-01,ok
+CPILFESL,core CPI,fred,267,2004-01-01,2026-04-01,ok
+PCEPI,PCE price index,fred,267,2004-01-01,2026-03-01,ok
+UNRATE,unemployment rate,fred,267,2004-01-01,2026-04-01,ok
+PAYEMS,nonfarm payrolls,fred,268,2004-01-01,2026-04-01,ok
+SAHMREALTIME,real-time Sahm Rule recession indicator,fred,267,2004-01-01,2026-04-01,ok
+ICSA,initial jobless claims,fred,1167,2004-01-03,2026-05-09,ok
+INDPRO,industrial production,fred,268,2004-01-01,2026-04-01,ok
+RSAFS,advance retail sales,fred,268,2004-01-01,2026-04-01,ok
+NFCI,Chicago Fed National Financial Conditions Index,fred,1168,2004-01-02,2026-05-15,ok
+BAMLH0A0HYM2,high yield option-adjusted spread,fred,785,2023-05-22,2026-05-19,ok
+BAA10Y,BAA minus 10Y Treasury spread,fred,5593,2004-01-02,2026-05-18,ok
+VIXCLS,CBOE VIX close,fred,5660,2004-01-02,2026-05-19,ok
+USREC,NBER recession indicator,fred,268,2004-01-01,2026-04-01,ok
