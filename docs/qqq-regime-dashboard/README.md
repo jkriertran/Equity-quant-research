@@ -17,5 +17,5 @@ Open `docs/qqq-regime-dashboard/index.html` in a browser.
 After rerunning the regime study, refresh this publishable copy with:
 
 ```bash
-python3 tools/publish_qqq_regime_dashboard.py
+python3 tools/run_qqq_regime_dashboard_refresh.py
 ```

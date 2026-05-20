@@ -1,22 +1,22 @@
 {
-  "generated_at_utc": "2026-05-20T21:45:58Z",
+  "generated_at_utc": "2026-05-20T22:24:38Z",
   "source_dir": "analysis_output/qqq_macro_regime_study",
   "publish_dir": "docs/qqq-regime-dashboard",
   "entrypoint": {
     "path": "index.html",
     "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_nowcasting_dashboard.html",
-    "bytes": 28104
+    "bytes": 28098
   },
   "plots": [
     {
       "path": "plots/qqq_boundary_score_monthly.png",
       "source": "analysis_output/qqq_macro_regime_study/plots/qqq_boundary_score_monthly.png",
-      "bytes": 53282
+      "bytes": 66523
     },
     {
       "path": "plots/qqq_boundary_score_weekly.png",
       "source": "analysis_output/qqq_macro_regime_study/plots/qqq_boundary_score_weekly.png",
-      "bytes": 55265
+      "bytes": 49337
     },
     {
       "path": "plots/qqq_macro_regime_dashboard_desktop.png",
@@ -31,32 +31,32 @@
     {
       "path": "plots/qqq_regime_timeline_monthly.png",
       "source": "analysis_output/qqq_macro_regime_study/plots/qqq_regime_timeline_monthly.png",
-      "bytes": 143310
+      "bytes": 144033
     },
     {
       "path": "plots/qqq_regime_timeline_weekly.png",
       "source": "analysis_output/qqq_macro_regime_study/plots/qqq_regime_timeline_weekly.png",
-      "bytes": 175301
+      "bytes": 175478
     },
     {
       "path": "plots/qqq_transition_heatmap_13p_weekly.png",
       "source": "analysis_output/qqq_macro_regime_study/plots/qqq_transition_heatmap_13p_weekly.png",
-      "bytes": 84060
+      "bytes": 83946
     },
     {
       "path": "plots/qqq_transition_heatmap_1p_monthly.png",
       "source": "analysis_output/qqq_macro_regime_study/plots/qqq_transition_heatmap_1p_monthly.png",
-      "bytes": 81867
+      "bytes": 82018
     },
     {
       "path": "plots/qqq_transition_heatmap_3p_monthly.png",
       "source": "analysis_output/qqq_macro_regime_study/plots/qqq_transition_heatmap_3p_monthly.png",
-      "bytes": 83676
+      "bytes": 83351
     },
     {
       "path": "plots/qqq_transition_heatmap_4p_weekly.png",
       "source": "analysis_output/qqq_macro_regime_study/plots/qqq_transition_heatmap_4p_weekly.png",
-      "bytes": 82123
+      "bytes": 82136
     }
   ],
   "csv_outputs": [
@@ -68,17 +68,17 @@
     {
       "path": "data/qqq_macro_regime_asset_leaderboard_monthly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_asset_leaderboard_monthly.csv",
-      "bytes": 6675
+      "bytes": 6634
     },
     {
       "path": "data/qqq_macro_regime_asset_leaderboard_weekly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_asset_leaderboard_weekly.csv",
-      "bytes": 6711
+      "bytes": 6744
     },
     {
       "path": "data/qqq_macro_regime_current_state_monthly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_current_state_monthly.csv",
-      "bytes": 1286
+      "bytes": 1355
     },
     {
       "path": "data/qqq_macro_regime_current_state_weekly.csv",
@@ -88,32 +88,32 @@
     {
       "path": "data/qqq_macro_regime_daily_input_audit_monthly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_daily_input_audit_monthly.csv",
-      "bytes": 25665
+      "bytes": 25827
     },
     {
       "path": "data/qqq_macro_regime_daily_input_audit_weekly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_daily_input_audit_weekly.csv",
-      "bytes": 25665
+      "bytes": 25827
     },
     {
       "path": "data/qqq_macro_regime_edge_features_monthly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_edge_features_monthly.csv",
-      "bytes": 67525
+      "bytes": 66487
     },
     {
       "path": "data/qqq_macro_regime_edge_features_weekly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_edge_features_weekly.csv",
-      "bytes": 59978
+      "bytes": 58893
     },
     {
       "path": "data/qqq_macro_regime_edge_monitor_monthly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_edge_monitor_monthly.csv",
-      "bytes": 3726
+      "bytes": 3749
     },
     {
       "path": "data/qqq_macro_regime_edge_monitor_weekly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_edge_monitor_weekly.csv",
-      "bytes": 3947
+      "bytes": 3935
     },
     {
       "path": "data/qqq_macro_regime_feature_audit_monthly.csv",
@@ -123,32 +123,32 @@
     {
       "path": "data/qqq_macro_regime_feature_audit_weekly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_feature_audit_weekly.csv",
-      "bytes": 6625
+      "bytes": 6624
     },
     {
       "path": "data/qqq_macro_regime_features_monthly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_features_monthly.csv",
-      "bytes": 382391
+      "bytes": 369032
     },
     {
       "path": "data/qqq_macro_regime_features_weekly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_features_weekly.csv",
-      "bytes": 1690913
+      "bytes": 1635835
     },
     {
       "path": "data/qqq_macro_regime_model_checks_monthly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_model_checks_monthly.csv",
-      "bytes": 806
+      "bytes": 844
     },
     {
       "path": "data/qqq_macro_regime_model_checks_weekly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_model_checks_weekly.csv",
-      "bytes": 864
+      "bytes": 827
     },
     {
       "path": "data/qqq_macro_regime_model_diagnostics_monthly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_model_diagnostics_monthly.csv",
-      "bytes": 153
+      "bytes": 155
     },
     {
       "path": "data/qqq_macro_regime_model_diagnostics_weekly.csv",
@@ -158,62 +158,62 @@
     {
       "path": "data/qqq_macro_regime_model_features_monthly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_model_features_monthly.csv",
-      "bytes": 983
+      "bytes": 976
     },
     {
       "path": "data/qqq_macro_regime_model_features_weekly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_model_features_weekly.csv",
-      "bytes": 1042
+      "bytes": 1035
     },
     {
       "path": "data/qqq_macro_regime_panel_monthly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_panel_monthly.csv",
-      "bytes": 1933333
+      "bytes": 1883819
     },
     {
       "path": "data/qqq_macro_regime_panel_weekly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_panel_weekly.csv",
-      "bytes": 8361766
+      "bytes": 8160442
     },
     {
       "path": "data/qqq_macro_regime_raw_summary_monthly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_raw_summary_monthly.csv",
-      "bytes": 1821
+      "bytes": 1802
     },
     {
       "path": "data/qqq_macro_regime_raw_summary_weekly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_raw_summary_weekly.csv",
-      "bytes": 1867
+      "bytes": 1872
     },
     {
       "path": "data/qqq_macro_regime_scenario_checks_monthly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_scenario_checks_monthly.csv",
-      "bytes": 1098
+      "bytes": 1106
     },
     {
       "path": "data/qqq_macro_regime_scenario_checks_weekly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_scenario_checks_weekly.csv",
-      "bytes": 1137
+      "bytes": 1105
     },
     {
       "path": "data/qqq_macro_regime_states_monthly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_states_monthly.csv",
-      "bytes": 32143
+      "bytes": 37865
     },
     {
       "path": "data/qqq_macro_regime_states_weekly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_states_weekly.csv",
-      "bytes": 162720
+      "bytes": 157615
     },
     {
       "path": "data/qqq_macro_regime_summary_monthly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_summary_monthly.csv",
-      "bytes": 1933
+      "bytes": 1865
     },
     {
       "path": "data/qqq_macro_regime_summary_weekly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_summary_weekly.csv",
-      "bytes": 1950
+      "bytes": 1944
     },
     {
       "path": "data/qqq_macro_regime_targets_monthly.csv",
@@ -223,17 +223,17 @@
     {
       "path": "data/qqq_macro_regime_targets_weekly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_targets_weekly.csv",
-      "bytes": 133041
+      "bytes": 133270
     },
     {
       "path": "data/qqq_macro_regime_transition_probabilities_monthly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_transition_probabilities_monthly.csv",
-      "bytes": 3415
+      "bytes": 3174
     },
     {
       "path": "data/qqq_macro_regime_transition_probabilities_weekly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_transition_probabilities_weekly.csv",
-      "bytes": 3412
+      "bytes": 3380
     }
   ]
 }
