@@ -12,11 +12,11 @@ PCEPI,PCE price index,fred,267,2004-01-01,2026-03-01,ok
 UNRATE,unemployment rate,fred,267,2004-01-01,2026-04-01,ok
 PAYEMS,nonfarm payrolls,fred,268,2004-01-01,2026-04-01,ok
 SAHMREALTIME,real-time Sahm Rule recession indicator,fred,267,2004-01-01,2026-04-01,ok
-ICSA,initial jobless claims,fred,1167,2004-01-03,2026-05-09,ok
+ICSA,initial jobless claims,fred,1168,2004-01-03,2026-05-16,ok
 INDPRO,industrial production,fred,268,2004-01-01,2026-04-01,ok
 RSAFS,advance retail sales,fred,268,2004-01-01,2026-04-01,ok
 NFCI,Chicago Fed National Financial Conditions Index,fred,1168,2004-01-02,2026-05-15,ok
-BAMLH0A0HYM2,high yield option-adjusted spread,fred,785,2023-05-22,2026-05-19,ok
+BAMLH0A0HYM2,high yield option-adjusted spread,fred,786,2023-05-22,2026-05-20,ok
 BAA10Y,BAA minus 10Y Treasury spread,fred,5594,2004-01-02,2026-05-19,ok
-VIXCLS,CBOE VIX close,fred,5660,2004-01-02,2026-05-19,ok
+VIXCLS,CBOE VIX close,fred,5661,2004-01-02,2026-05-20,ok
 USREC,NBER recession indicator,fred,268,2004-01-01,2026-04-01,ok

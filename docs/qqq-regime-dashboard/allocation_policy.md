@@ -1,6 +1,6 @@
 # QQQ Regime Allocation Policy
 
-Generated: 2026-05-21T01:26:14Z
+Generated: 2026-05-21T15:08:00Z
 
 This is a research policy for a mock allocation index. It is not a personalized portfolio recommendation, a live trading system, or investment advice.
 
@@ -45,12 +45,12 @@ Weights are deliberately conservative. They use the asset leaderboard as context
 
 | as_of      | current_regime   | asset_class            | implementation_proxy                    |   target_weight_pct |
 |:-----------|:-----------------|:-----------------------|:----------------------------------------|--------------------:|
-| 2026-05-20 | macro_tightening | QQQ / Growth Equity    | QQQ                                     |                35.0 |
-| 2026-05-20 | macro_tightening | SPY / Broad US Equity  | SPY                                     |                10.0 |
-| 2026-05-20 | macro_tightening | AGG / Core Bonds       | AGG                                     |                20.0 |
-| 2026-05-20 | macro_tightening | LQD / IG Credit        | LQD                                     |                 5.0 |
-| 2026-05-20 | macro_tightening | Gold                   | GLD or IAU                              |                15.0 |
-| 2026-05-20 | macro_tightening | Cash / Fed Funds Proxy | Treasury bills, SGOV/BIL, or cash sweep |                15.0 |
+| 2026-05-21 | macro_tightening | QQQ / Growth Equity    | QQQ                                     |                35.0 |
+| 2026-05-21 | macro_tightening | SPY / Broad US Equity  | SPY                                     |                10.0 |
+| 2026-05-21 | macro_tightening | AGG / Core Bonds       | AGG                                     |                20.0 |
+| 2026-05-21 | macro_tightening | LQD / IG Credit        | LQD                                     |                 5.0 |
+| 2026-05-21 | macro_tightening | Gold                   | GLD or IAU                              |                15.0 |
+| 2026-05-21 | macro_tightening | Cash / Fed Funds Proxy | Treasury bills, SGOV/BIL, or cash sweep |                15.0 |
 
 ## Risk Limits
 
