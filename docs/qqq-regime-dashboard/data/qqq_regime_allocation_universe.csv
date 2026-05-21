@@ -1,0 +1,9 @@
+sleeve,asset_class,implementation_proxy,local_data_column,included_in_index_v1,role,notes
+qqq_growth,QQQ / Growth Equity,QQQ,qqq_close,True,Primary growth engine and benchmark-relative risk sleeve.,Highest QQQ-centric upside sleeve; capped so the mock index does not become QQQ buy-and-hold with decoration.
+broad_equity,SPY / Broad US Equity,SPY,spy_level,True,Diversified equity ballast inside the equity bucket.,Keeps the index from expressing all equity exposure through Nasdaq concentration.
+core_bonds,AGG / Core Bonds,AGG,agg_level,True,Duration and defensive ballast.,Historically ranks well by worst-forward-return and stability in stress regimes.
+ig_credit,LQD / IG Credit,LQD,lqd_level,True,Moderate carry and credit beta.,Capped because credit can behave like equity during liquidity stress.
+gold,Gold,GLD or IAU,gold_level,True,"Inflation, dollar, and stress-diversifier sleeve.",Local study uses a gold level proxy; ETF execution proxy should be validated before live use.
+cash,Cash / Fed Funds Proxy,"Treasury bills, SGOV/BIL, or cash sweep",DFF/FEDFUNDS,True,"Dry powder, volatility dampener, and high-confidence defensive sleeve.","The study estimates cash carry from FRED policy-rate series, not from a specific ETF total-return feed."
+oil_monitor,Oil,USO or futures proxy,usoil_level,False,Macro monitor only in v1.,Excluded from the allocation index despite strong historical forward returns in some regimes because tail risk and implementation roll effects are large.
+dollar_monitor,DXY / Dollar Exposure,UUP or currency basket proxy,dxy_level,False,Macro monitor only in v1.,"Excluded until the tradable proxy, carry, and tax treatment are modeled explicitly."

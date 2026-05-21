@@ -6,7 +6,8 @@ Static GitHub Pages copy of the QQQ macro-regime nowcasting dashboard.
 
 - `index.html`: publishable dashboard entry point.
 - `plots/`: 10 PNG chart files.
-- `data/`: 35 CSV study output files plus `manifest.json`.
+- `data/`: 39 CSV study output files plus `manifest.json`.
+- `allocation_policy.md`: mock index policy definition.
 
 ## Local Preview
 

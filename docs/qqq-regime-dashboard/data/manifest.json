@@ -1,11 +1,16 @@
 {
-  "generated_at_utc": "2026-05-20T22:24:38Z",
+  "generated_at_utc": "2026-05-21T01:26:26Z",
   "source_dir": "analysis_output/qqq_macro_regime_study",
   "publish_dir": "docs/qqq-regime-dashboard",
   "entrypoint": {
     "path": "index.html",
     "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_nowcasting_dashboard.html",
-    "bytes": 28098
+    "bytes": 28935
+  },
+  "allocation_policy": {
+    "path": "allocation_policy.md",
+    "source": "analysis_output/qqq_macro_regime_study/qqq_regime_allocation_policy.md",
+    "bytes": 11065
   },
   "plots": [
     {
@@ -234,6 +239,26 @@
       "path": "data/qqq_macro_regime_transition_probabilities_weekly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_transition_probabilities_weekly.csv",
       "bytes": 3380
+    },
+    {
+      "path": "data/qqq_regime_allocation_current_policy.csv",
+      "source": "analysis_output/qqq_macro_regime_study/qqq_regime_allocation_current_policy.csv",
+      "bytes": 602
+    },
+    {
+      "path": "data/qqq_regime_allocation_risk_limits.csv",
+      "source": "analysis_output/qqq_macro_regime_study/qqq_regime_allocation_risk_limits.csv",
+      "bytes": 1614
+    },
+    {
+      "path": "data/qqq_regime_allocation_universe.csv",
+      "source": "analysis_output/qqq_macro_regime_study/qqq_regime_allocation_universe.csv",
+      "bytes": 1683
+    },
+    {
+      "path": "data/qqq_regime_allocation_weights.csv",
+      "source": "analysis_output/qqq_macro_regime_study/qqq_regime_allocation_weights.csv",
+      "bytes": 1466
     }
   ]
 }

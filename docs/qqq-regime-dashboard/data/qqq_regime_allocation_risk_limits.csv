@@ -1,0 +1,16 @@
+limit_name,value,rationale
+index_type,long_only_fully_invested_model_index,"The first index should be transparent and benchmark-like, not a leveraged tactical strategy."
+gross_exposure_max_pct,100,No leverage in v1.
+short_exposure_max_pct,0,No shorts in v1; inverse funds and futures can be a later study.
+qqq_weight_max_pct,60,Preserves the QQQ identity while preventing a single-sleeve index.
+equity_weight_max_pct,75,Caps combined QQQ plus SPY beta.
+equity_weight_min_pct,15,Keeps the benchmark QQQ-aware even in stress regimes.
+cash_weight_min_pct,5,Every regime keeps explicit liquidity.
+gold_weight_max_pct,25,Gold is useful diversifier but volatile enough to need a cap.
+ig_credit_weight_max_pct,15,Credit spread beta can become equity-like in stress.
+rebalance_frequency,weekly,Matches the primary nowcast grain.
+signal_lag,rebalance on the next tradable session after the regime observation date,Avoids using the same close for both classification and execution.
+max_one_way_turnover_per_rebalance_pct,25,Keeps the mock index from becoming a churn machine during regime noise.
+boundary_blend_rule,"if boundary_score >= 20% or confidence < 80%, use posterior-probability blended regime weights","Boundary score is classification ambiguity, so ambiguous states should smooth weights rather than force a hard switch."
+transition_risk_rule,transition probability is reported but does not independently de-risk v1,"Transition risk is a path statistic, not a direct market-risk signal."
+drawdown_review_trigger_pct,-15,A portfolio drawdown beyond this level should be highlighted before increasing equity risk.
