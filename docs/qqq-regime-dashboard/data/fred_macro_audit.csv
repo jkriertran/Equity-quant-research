@@ -1,10 +1,10 @@
 series_id,description,source,rows,first_date,last_date,status
-DGS2,2Y Treasury yield,fred,0,,,"failed: ReadTimeout: HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Read timed out. (read timeout=30)"
-DGS10,10Y Treasury yield,fred,0,,,"failed: ReadTimeout: HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Read timed out. (read timeout=30)"
-DFII10,10Y TIPS real yield,fred,0,,,"failed: ReadTimeout: HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Read timed out. (read timeout=30)"
-T5YIE,5Y inflation breakeven,fred,0,,,"failed: ReadTimeout: HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Read timed out. (read timeout=30)"
-T10YIE,10Y inflation breakeven,fred,0,,,"failed: ReadTimeout: HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Read timed out. (read timeout=30)"
-DFF,effective fed funds rate,fred,0,,,"failed: ReadTimeout: HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Read timed out. (read timeout=30)"
+DGS2,2Y Treasury yield,fred,5617,2004-01-02,2026-06-15,ok
+DGS10,10Y Treasury yield,fred,5617,2004-01-02,2026-06-15,ok
+DFII10,10Y TIPS real yield,fred,5617,2004-01-02,2026-06-15,ok
+T5YIE,5Y inflation breakeven,fred,5618,2004-01-02,2026-06-16,ok
+T10YIE,10Y inflation breakeven,fred,5618,2004-01-02,2026-06-16,ok
+DFF,effective fed funds rate,fred,8202,2004-01-01,2026-06-15,ok
 FEDFUNDS,federal funds target/rate,fred,269,2004-01-01,2026-05-01,ok
 CPIAUCSL,CPI all urban consumers,fred,268,2004-01-01,2026-05-01,ok
 CPILFESL,core CPI,fred,268,2004-01-01,2026-05-01,ok
@@ -12,11 +12,11 @@ PCEPI,PCE price index,fred,268,2004-01-01,2026-04-01,ok
 UNRATE,unemployment rate,fred,268,2004-01-01,2026-05-01,ok
 PAYEMS,nonfarm payrolls,fred,269,2004-01-01,2026-05-01,ok
 SAHMREALTIME,real-time Sahm Rule recession indicator,fred,268,2004-01-01,2026-05-01,ok
-ICSA,initial jobless claims,fred,0,,,"failed: ReadTimeout: HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Read timed out. (read timeout=30)"
+ICSA,initial jobless claims,fred,1171,2004-01-03,2026-06-06,ok
 INDPRO,industrial production,fred,269,2004-01-01,2026-05-01,ok
 RSAFS,advance retail sales,fred,268,2004-01-01,2026-04-01,ok
-NFCI,Chicago Fed National Financial Conditions Index,fred,0,,,"failed: ReadTimeout: HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Read timed out. (read timeout=30)"
-BAMLH0A0HYM2,high yield option-adjusted spread,fred,785,2023-06-16,2026-06-12,ok
-BAA10Y,BAA minus 10Y Treasury spread,fred,0,,,"failed: ReadTimeout: HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Read timed out. (read timeout=30)"
-VIXCLS,CBOE VIX close,fred,0,,,"failed: ReadTimeout: HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Read timed out. (read timeout=30)"
+NFCI,Chicago Fed National Financial Conditions Index,fred,1171,2004-01-02,2026-06-05,ok
+BAMLH0A0HYM2,high yield option-adjusted spread,fred,785,2023-06-19,2026-06-15,ok
+BAA10Y,BAA minus 10Y Treasury spread,fred,5612,2004-01-02,2026-06-15,ok
+VIXCLS,CBOE VIX close,fred,5679,2004-01-02,2026-06-15,ok
 USREC,NBER recession indicator,fred,269,2004-01-01,2026-05-01,ok

@@ -1,6 +1,6 @@
 scenario,start,end,expected_behavior,rows,top_regime,top_regime_share_pct,expected_regime_group,expected_group_share_pct,pass_threshold_pct,top_regime_avg_fwd_3p_pct,top_regime_hit_rate_3p_pct,constructive_top_regime,passes_directional_check
-2008_crisis,2008-09-01,2009-03-31,stress,7,risk_off_stress,71.42857142857143,macro_tightening/risk_off_stress,71.42857142857143,40.0,3.5334872475669923,63.63636363636363,False,True
-march_2020_crash,2020-02-24,2020-04-30,stress,3,risk_off_stress,66.66666666666666,macro_tightening/risk_off_stress,66.66666666666666,40.0,3.5334872475669923,63.63636363636363,False,True
-2022_tightening,2022-01-01,2022-10-31,stress,10,risk_off_stress,80.0,macro_tightening/risk_off_stress,90.0,40.0,3.5334872475669923,63.63636363636363,False,True
-2017_risk_on,2017-01-01,2017-12-31,constructive,12,macro_tightening,58.333333333333336,fragile_growth/risk_on_growth,41.66666666666667,50.0,3.815276260995991,78.51239669421489,True,True
-2021_risk_on,2021-01-01,2021-12-31,constructive,12,risk_on_growth,75.0,fragile_growth/risk_on_growth,75.0,50.0,1.9948994546836147,67.85714285714286,True,True
+2008_crisis,2008-09-01,2009-03-31,stress,7,risk_off_stress,71.42857142857143,macro_tightening/risk_off_stress,71.42857142857143,40.0,1.853891625769022,57.57575757575758,False,True
+march_2020_crash,2020-02-24,2020-04-30,stress,3,fragile_growth,100.0,macro_tightening/risk_off_stress,0.0,40.0,6.689895987399725,82.35294117647058,True,False
+2022_tightening,2022-01-01,2022-10-31,stress,10,risk_off_stress,100.0,macro_tightening/risk_off_stress,100.0,40.0,1.853891625769022,57.57575757575758,False,True
+2017_risk_on,2017-01-01,2017-12-31,constructive,12,macro_tightening,100.0,fragile_growth/risk_on_growth,0.0,50.0,3.355261620815711,73.37662337662337,True,True
+2021_risk_on,2021-01-01,2021-12-31,constructive,12,macro_tightening,91.66666666666666,fragile_growth/risk_on_growth,8.333333333333332,50.0,3.355261620815711,73.37662337662337,True,True
