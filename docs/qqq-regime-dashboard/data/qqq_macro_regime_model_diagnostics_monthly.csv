@@ -1,2 +1,2 @@
 seed,covariance_type,bic,min_regime_frequency,met_min_frequency_target,model_rows,feature_count
-98,full,28264.3196360534,0.12359550561797752,True,267,54
+98,full,28195.274501053183,0.11610486891385768,True,267,54
