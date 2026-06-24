@@ -1,7 +1,7 @@
 policy,as_of,regime,sleeve,target_weight,target_weight_pct,current_regime,confidence,boundary_score
-balanced_v1,2026-06-22,macro_tightening,qqq_growth,0.35,35.0,macro_tightening,1.0,0.0
-balanced_v1,2026-06-22,macro_tightening,broad_equity,0.1,10.0,macro_tightening,1.0,0.0
-balanced_v1,2026-06-22,macro_tightening,core_bonds,0.2,20.0,macro_tightening,1.0,0.0
-balanced_v1,2026-06-22,macro_tightening,ig_credit,0.05,5.0,macro_tightening,1.0,0.0
-balanced_v1,2026-06-22,macro_tightening,gold,0.15,15.0,macro_tightening,1.0,0.0
-balanced_v1,2026-06-22,macro_tightening,cash,0.15,15.0,macro_tightening,1.0,0.0
+balanced_v1,2026-06-23,macro_tightening,qqq_growth,0.35,35.0,macro_tightening,1.0,0.0
+balanced_v1,2026-06-23,macro_tightening,broad_equity,0.1,10.0,macro_tightening,1.0,0.0
+balanced_v1,2026-06-23,macro_tightening,core_bonds,0.2,20.0,macro_tightening,1.0,0.0
+balanced_v1,2026-06-23,macro_tightening,ig_credit,0.05,5.0,macro_tightening,1.0,0.0
+balanced_v1,2026-06-23,macro_tightening,gold,0.15,15.0,macro_tightening,1.0,0.0
+balanced_v1,2026-06-23,macro_tightening,cash,0.15,15.0,macro_tightening,1.0,0.0
