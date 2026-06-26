@@ -1,22 +1,22 @@
 series_id,description,source,rows,first_date,last_date,status
-DGS2,2Y Treasury yield,fred,5621,2004-01-02,2026-06-22,ok
-DGS10,10Y Treasury yield,fred,5621,2004-01-02,2026-06-22,ok
-DFII10,10Y TIPS real yield,fred,5621,2004-01-02,2026-06-22,ok
-T5YIE,5Y inflation breakeven,fred,5622,2004-01-02,2026-06-23,ok
-T10YIE,10Y inflation breakeven,fred,5622,2004-01-02,2026-06-23,ok
-DFF,effective fed funds rate,fred,8209,2004-01-01,2026-06-22,ok
+DGS2,2Y Treasury yield,fred,5623,2004-01-02,2026-06-24,ok
+DGS10,10Y Treasury yield,fred,5623,2004-01-02,2026-06-24,ok
+DFII10,10Y TIPS real yield,fred,5623,2004-01-02,2026-06-24,ok
+T5YIE,5Y inflation breakeven,fred,5624,2004-01-02,2026-06-25,ok
+T10YIE,10Y inflation breakeven,fred,5624,2004-01-02,2026-06-25,ok
+DFF,effective fed funds rate,fred,8211,2004-01-01,2026-06-24,ok
 FEDFUNDS,federal funds target/rate,fred,269,2004-01-01,2026-05-01,ok
 CPIAUCSL,CPI all urban consumers,fred,268,2004-01-01,2026-05-01,ok
 CPILFESL,core CPI,fred,268,2004-01-01,2026-05-01,ok
-PCEPI,PCE price index,fred,268,2004-01-01,2026-04-01,ok
+PCEPI,PCE price index,fred,269,2004-01-01,2026-05-01,ok
 UNRATE,unemployment rate,fred,268,2004-01-01,2026-05-01,ok
 PAYEMS,nonfarm payrolls,fred,269,2004-01-01,2026-05-01,ok
 SAHMREALTIME,real-time Sahm Rule recession indicator,fred,268,2004-01-01,2026-05-01,ok
-ICSA,initial jobless claims,fred,1172,2004-01-03,2026-06-13,ok
+ICSA,initial jobless claims,fred,1173,2004-01-03,2026-06-20,ok
 INDPRO,industrial production,fred,269,2004-01-01,2026-05-01,ok
 RSAFS,advance retail sales,fred,269,2004-01-01,2026-05-01,ok
-NFCI,Chicago Fed National Financial Conditions Index,fred,1172,2004-01-02,2026-06-12,ok
-BAMLH0A0HYM2,high yield option-adjusted spread,fred,785,2023-06-26,2026-06-22,ok
-BAA10Y,BAA minus 10Y Treasury spread,fred,5616,2004-01-02,2026-06-22,ok
-VIXCLS,CBOE VIX close,fred,5684,2004-01-02,2026-06-22,ok
+NFCI,Chicago Fed National Financial Conditions Index,fred,1173,2004-01-02,2026-06-19,ok
+BAMLH0A0HYM2,high yield option-adjusted spread,fred,787,2023-06-26,2026-06-24,ok
+BAA10Y,BAA minus 10Y Treasury spread,fred,5618,2004-01-02,2026-06-24,ok
+VIXCLS,CBOE VIX close,fred,5686,2004-01-02,2026-06-24,ok
 USREC,NBER recession indicator,fred,269,2004-01-01,2026-05-01,ok
