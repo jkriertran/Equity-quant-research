@@ -1,7 +1,7 @@
 policy,as_of,regime,sleeve,target_weight,target_weight_pct,current_regime,confidence,boundary_score
-balanced_v1,2026-06-29,risk_on_growth,qqq_growth,0.55,55.00000000000001,risk_on_growth,1.0,0.0
-balanced_v1,2026-06-29,risk_on_growth,broad_equity,0.15,15.0,risk_on_growth,1.0,0.0
-balanced_v1,2026-06-29,risk_on_growth,core_bonds,0.1,10.0,risk_on_growth,1.0,0.0
-balanced_v1,2026-06-29,risk_on_growth,ig_credit,0.05,5.0,risk_on_growth,1.0,0.0
-balanced_v1,2026-06-29,risk_on_growth,gold,0.05,5.0,risk_on_growth,1.0,0.0
-balanced_v1,2026-06-29,risk_on_growth,cash,0.1,10.0,risk_on_growth,1.0,0.0
+balanced_v1,2026-06-30,risk_on_growth,qqq_growth,0.55,55.00000000000001,risk_on_growth,1.0,0.0
+balanced_v1,2026-06-30,risk_on_growth,broad_equity,0.15,15.0,risk_on_growth,1.0,0.0
+balanced_v1,2026-06-30,risk_on_growth,core_bonds,0.1,10.0,risk_on_growth,1.0,0.0
+balanced_v1,2026-06-30,risk_on_growth,ig_credit,0.05,5.0,risk_on_growth,1.0,0.0
+balanced_v1,2026-06-30,risk_on_growth,gold,0.05,5.0,risk_on_growth,1.0,0.0
+balanced_v1,2026-06-30,risk_on_growth,cash,0.1,10.0,risk_on_growth,1.0,0.0
