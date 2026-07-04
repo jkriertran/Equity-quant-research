@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-07-03T02:32:40Z",
+  "generated_at_utc": "2026-07-04T02:53:34Z",
   "source_dir": "analysis_output/qqq_macro_regime_study",
   "publish_dir": "docs/qqq-regime-dashboard",
   "entrypoint": {
@@ -21,7 +21,7 @@
     {
       "path": "plots/qqq_boundary_score_weekly.png",
       "source": "analysis_output/qqq_macro_regime_study/plots/qqq_boundary_score_weekly.png",
-      "bytes": 51662
+      "bytes": 51933
     },
     {
       "path": "plots/qqq_macro_regime_dashboard_desktop.png",
@@ -88,27 +88,27 @@
     {
       "path": "data/qqq_macro_regime_current_state_weekly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_current_state_weekly.csv",
-      "bytes": 1450
+      "bytes": 1455
     },
     {
       "path": "data/qqq_macro_regime_daily_input_audit_monthly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_daily_input_audit_monthly.csv",
-      "bytes": 25814
+      "bytes": 25812
     },
     {
       "path": "data/qqq_macro_regime_daily_input_audit_weekly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_daily_input_audit_weekly.csv",
-      "bytes": 25814
+      "bytes": 25812
     },
     {
       "path": "data/qqq_macro_regime_edge_features_monthly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_edge_features_monthly.csv",
-      "bytes": 66290
+      "bytes": 66296
     },
     {
       "path": "data/qqq_macro_regime_edge_features_weekly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_edge_features_weekly.csv",
-      "bytes": 67141
+      "bytes": 67147
     },
     {
       "path": "data/qqq_macro_regime_edge_monitor_monthly.csv",
@@ -133,12 +133,12 @@
     {
       "path": "data/qqq_macro_regime_features_monthly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_features_monthly.csv",
-      "bytes": 373899
+      "bytes": 373888
     },
     {
       "path": "data/qqq_macro_regime_features_weekly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_features_weekly.csv",
-      "bytes": 1652067
+      "bytes": 1652022
     },
     {
       "path": "data/qqq_macro_regime_model_checks_monthly.csv",
@@ -158,7 +158,7 @@
     {
       "path": "data/qqq_macro_regime_model_diagnostics_weekly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_model_diagnostics_weekly.csv",
-      "bytes": 155
+      "bytes": 154
     },
     {
       "path": "data/qqq_macro_regime_model_features_monthly.csv",
@@ -173,22 +173,22 @@
     {
       "path": "data/qqq_macro_regime_panel_monthly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_panel_monthly.csv",
-      "bytes": 1903596
+      "bytes": 1903571
     },
     {
       "path": "data/qqq_macro_regime_panel_weekly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_panel_weekly.csv",
-      "bytes": 8225213
+      "bytes": 8225084
     },
     {
       "path": "data/qqq_macro_regime_raw_summary_monthly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_raw_summary_monthly.csv",
-      "bytes": 1795
+      "bytes": 1796
     },
     {
       "path": "data/qqq_macro_regime_raw_summary_weekly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_raw_summary_weekly.csv",
-      "bytes": 1840
+      "bytes": 1837
     },
     {
       "path": "data/qqq_macro_regime_scenario_checks_monthly.csv",
@@ -203,12 +203,12 @@
     {
       "path": "data/qqq_macro_regime_states_monthly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_states_monthly.csv",
-      "bytes": 29333
+      "bytes": 29342
     },
     {
       "path": "data/qqq_macro_regime_states_weekly.csv",
       "source": "analysis_output/qqq_macro_regime_study/qqq_macro_regime_states_weekly.csv",
-      "bytes": 194476
+      "bytes": 194523
     },
     {
       "path": "data/qqq_macro_regime_summary_monthly.csv",

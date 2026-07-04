@@ -1,6 +1,6 @@
 # QQQ Regime Allocation Policy
 
-Generated: 2026-07-03T02:32:40Z
+Generated: 2026-07-04T02:53:34Z
 
 This is a research policy for a mock allocation index. It is not a personalized portfolio recommendation, a live trading system, or investment advice.
 

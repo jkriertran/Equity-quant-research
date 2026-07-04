@@ -16,7 +16,7 @@ ICSA,initial jobless claims,fred,1174,2004-01-03,2026-06-27,ok
 INDPRO,industrial production,fred,269,2004-01-01,2026-05-01,ok
 RSAFS,advance retail sales,fred,269,2004-01-01,2026-05-01,ok
 NFCI,Chicago Fed National Financial Conditions Index,fred,1174,2004-01-02,2026-06-26,ok
-BAMLH0A0HYM2,high yield option-adjusted spread,fred,787,2023-07-03,2026-07-01,ok
+BAMLH0A0HYM2,high yield option-adjusted spread,fred,787,2023-07-04,2026-07-02,ok
 BAA10Y,BAA minus 10Y Treasury spread,fred,5623,2004-01-02,2026-07-01,ok
 VIXCLS,CBOE VIX close,fred,5691,2004-01-02,2026-07-01,ok
 USREC,NBER recession indicator,fred,270,2004-01-01,2026-06-01,ok
