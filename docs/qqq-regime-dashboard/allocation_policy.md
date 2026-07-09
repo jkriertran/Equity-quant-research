@@ -1,6 +1,6 @@
 # QQQ Regime Allocation Policy
 
-Generated: 2026-07-08T02:33:41Z
+Generated: 2026-07-09T02:34:08Z
 
 This is a research policy for a mock allocation index. It is not a personalized portfolio recommendation, a live trading system, or investment advice.
 
@@ -45,12 +45,12 @@ Weights are deliberately conservative. They use the asset leaderboard as context
 
 | as_of      | current_regime   | asset_class            | implementation_proxy                    |   target_weight_pct |
 |:-----------|:-----------------|:-----------------------|:----------------------------------------|--------------------:|
-| 2026-07-07 | risk_on_growth   | QQQ / Growth Equity    | QQQ                                     |                55.0 |
-| 2026-07-07 | risk_on_growth   | SPY / Broad US Equity  | SPY                                     |                15.0 |
-| 2026-07-07 | risk_on_growth   | AGG / Core Bonds       | AGG                                     |                10.0 |
-| 2026-07-07 | risk_on_growth   | LQD / IG Credit        | LQD                                     |                 5.0 |
-| 2026-07-07 | risk_on_growth   | Gold                   | GLD or IAU                              |                 5.0 |
-| 2026-07-07 | risk_on_growth   | Cash / Fed Funds Proxy | Treasury bills, SGOV/BIL, or cash sweep |                10.0 |
+| 2026-07-08 | risk_on_growth   | QQQ / Growth Equity    | QQQ                                     |                55.0 |
+| 2026-07-08 | risk_on_growth   | SPY / Broad US Equity  | SPY                                     |                15.0 |
+| 2026-07-08 | risk_on_growth   | AGG / Core Bonds       | AGG                                     |                10.0 |
+| 2026-07-08 | risk_on_growth   | LQD / IG Credit        | LQD                                     |                 5.0 |
+| 2026-07-08 | risk_on_growth   | Gold                   | GLD or IAU                              |                 5.0 |
+| 2026-07-08 | risk_on_growth   | Cash / Fed Funds Proxy | Treasury bills, SGOV/BIL, or cash sweep |                10.0 |
 
 ## Risk Limits
 
@@ -87,9 +87,9 @@ Top three assets by return-to-vol inside each weekly regime:
 | risk_off_stress  | Cash / Fed Funds Proxy |            0.93 |                 0.34 |                   0.01 |                    1 |
 | risk_off_stress  | Gold                   |            0.21 |                 2.24 |                 -21.04 |                    2 |
 | risk_off_stress  | LQD / IG Credit        |            0.19 |                 1.48 |                 -17.55 |                    3 |
-| risk_on_growth   | SPY / Broad US Equity  |            0.77 |                 4.65 |                 -15.07 |                    1 |
-| risk_on_growth   | QQQ / Growth Equity    |            0.64 |                 4.84 |                 -18.39 |                    2 |
-| risk_on_growth   | Oil                    |            0.51 |                 8.12 |                 -24.12 |                    3 |
+| risk_on_growth   | SPY / Broad US Equity  |            0.77 |                 4.67 |                 -15.07 |                    1 |
+| risk_on_growth   | QQQ / Growth Equity    |            0.64 |                 4.86 |                 -18.39 |                    2 |
+| risk_on_growth   | Oil                    |            0.52 |                 8.23 |                 -24.12 |                    3 |
 
 ## Interpretation Rules
 

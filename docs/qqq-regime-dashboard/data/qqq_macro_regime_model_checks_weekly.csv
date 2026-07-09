@@ -1,5 +1,5 @@
 check,value,pass,note
-probability_rows_sum_to_one,1.4432899320127035e-15,True,max absolute row probability sum error
+probability_rows_sum_to_one,1.1102230246251565e-15,True,max absolute row probability sum error
 transition_rows_sum_to_one_1p,0.0,True,max absolute transition row sum error on non-empty rows
 transition_rows_sum_to_one_4p,0.0,True,max absolute transition row sum error on non-empty rows
 transition_rows_sum_to_one_13p,0.0,True,max absolute transition row sum error on non-empty rows
