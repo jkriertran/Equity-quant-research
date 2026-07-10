@@ -1,10 +1,10 @@
 series_id,description,source,rows,first_date,last_date,status
-DGS2,2Y Treasury yield,fred,5631,2004-01-02,2026-07-07,ok
-DGS10,10Y Treasury yield,fred,5631,2004-01-02,2026-07-07,ok
-DFII10,10Y TIPS real yield,fred,5631,2004-01-02,2026-07-07,ok
-T5YIE,5Y inflation breakeven,fred,5632,2004-01-02,2026-07-08,ok
-T10YIE,10Y inflation breakeven,fred,5632,2004-01-02,2026-07-08,ok
-DFF,effective fed funds rate,fred,8224,2004-01-01,2026-07-07,ok
+DGS2,2Y Treasury yield,fred,5632,2004-01-02,2026-07-08,ok
+DGS10,10Y Treasury yield,fred,5632,2004-01-02,2026-07-08,ok
+DFII10,10Y TIPS real yield,fred,5632,2004-01-02,2026-07-08,ok
+T5YIE,5Y inflation breakeven,fred,5633,2004-01-02,2026-07-09,ok
+T10YIE,10Y inflation breakeven,fred,5633,2004-01-02,2026-07-09,ok
+DFF,effective fed funds rate,fred,8225,2004-01-01,2026-07-08,ok
 FEDFUNDS,federal funds target/rate,fred,270,2004-01-01,2026-06-01,ok
 CPIAUCSL,CPI all urban consumers,fred,268,2004-01-01,2026-05-01,ok
 CPILFESL,core CPI,fred,268,2004-01-01,2026-05-01,ok
@@ -12,11 +12,11 @@ PCEPI,PCE price index,fred,269,2004-01-01,2026-05-01,ok
 UNRATE,unemployment rate,fred,269,2004-01-01,2026-06-01,ok
 PAYEMS,nonfarm payrolls,fred,270,2004-01-01,2026-06-01,ok
 SAHMREALTIME,real-time Sahm Rule recession indicator,fred,269,2004-01-01,2026-06-01,ok
-ICSA,initial jobless claims,fred,1174,2004-01-03,2026-06-27,ok
+ICSA,initial jobless claims,fred,1175,2004-01-03,2026-07-04,ok
 INDPRO,industrial production,fred,269,2004-01-01,2026-05-01,ok
 RSAFS,advance retail sales,fred,269,2004-01-01,2026-05-01,ok
 NFCI,Chicago Fed National Financial Conditions Index,fred,1175,2004-01-02,2026-07-03,ok
-BAMLH0A0HYM2,high yield option-adjusted spread,fred,786,2023-07-10,2026-07-07,ok
-BAA10Y,BAA minus 10Y Treasury spread,fred,5626,2004-01-02,2026-07-07,ok
-VIXCLS,CBOE VIX close,fred,5695,2004-01-02,2026-07-07,ok
+BAMLH0A0HYM2,high yield option-adjusted spread,fred,787,2023-07-10,2026-07-08,ok
+BAA10Y,BAA minus 10Y Treasury spread,fred,5627,2004-01-02,2026-07-08,ok
+VIXCLS,CBOE VIX close,fred,5696,2004-01-02,2026-07-08,ok
 USREC,NBER recession indicator,fred,270,2004-01-01,2026-06-01,ok
