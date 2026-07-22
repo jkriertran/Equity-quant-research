@@ -1,6 +1,6 @@
 # QQQ Regime Allocation Policy
 
-Generated: 2026-07-21T02:37:19Z
+Generated: 2026-07-22T02:38:43Z
 
 This is a research policy for a mock allocation index. It is not a personalized portfolio recommendation, a live trading system, or investment advice.
 
@@ -45,12 +45,12 @@ Weights are deliberately conservative. They use the asset leaderboard as context
 
 | as_of      | current_regime   | asset_class            | implementation_proxy                    |   target_weight_pct |
 |:-----------|:-----------------|:-----------------------|:----------------------------------------|--------------------:|
-| 2026-07-20 | risk_on_growth   | QQQ / Growth Equity    | QQQ                                     |                55.0 |
-| 2026-07-20 | risk_on_growth   | SPY / Broad US Equity  | SPY                                     |                15.0 |
-| 2026-07-20 | risk_on_growth   | AGG / Core Bonds       | AGG                                     |                10.0 |
-| 2026-07-20 | risk_on_growth   | LQD / IG Credit        | LQD                                     |                 5.0 |
-| 2026-07-20 | risk_on_growth   | Gold                   | GLD or IAU                              |                 5.0 |
-| 2026-07-20 | risk_on_growth   | Cash / Fed Funds Proxy | Treasury bills, SGOV/BIL, or cash sweep |                10.0 |
+| 2026-07-21 | risk_on_growth   | QQQ / Growth Equity    | QQQ                                     |                55.0 |
+| 2026-07-21 | risk_on_growth   | SPY / Broad US Equity  | SPY                                     |                15.0 |
+| 2026-07-21 | risk_on_growth   | AGG / Core Bonds       | AGG                                     |                10.0 |
+| 2026-07-21 | risk_on_growth   | LQD / IG Credit        | LQD                                     |                 5.0 |
+| 2026-07-21 | risk_on_growth   | Gold                   | GLD or IAU                              |                 5.0 |
+| 2026-07-21 | risk_on_growth   | Cash / Fed Funds Proxy | Treasury bills, SGOV/BIL, or cash sweep |                10.0 |
 
 ## Risk Limits
 
