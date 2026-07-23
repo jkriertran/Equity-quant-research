@@ -1,10 +1,10 @@
 series_id,description,source,rows,first_date,last_date,status
-DGS2,2Y Treasury yield,fred,5640,2004-01-02,2026-07-20,ok
-DGS10,10Y Treasury yield,fred,5640,2004-01-02,2026-07-20,ok
-DFII10,10Y TIPS real yield,fred,5640,2004-01-02,2026-07-20,ok
-T5YIE,5Y inflation breakeven,fred,5641,2004-01-02,2026-07-21,ok
-T10YIE,10Y inflation breakeven,fred,5641,2004-01-02,2026-07-21,ok
-DFF,effective fed funds rate,fred,8237,2004-01-01,2026-07-20,ok
+DGS2,2Y Treasury yield,fred,5641,2004-01-02,2026-07-21,ok
+DGS10,10Y Treasury yield,fred,5641,2004-01-02,2026-07-21,ok
+DFII10,10Y TIPS real yield,fred,5641,2004-01-02,2026-07-21,ok
+T5YIE,5Y inflation breakeven,fred,5642,2004-01-02,2026-07-22,ok
+T10YIE,10Y inflation breakeven,fred,5642,2004-01-02,2026-07-22,ok
+DFF,effective fed funds rate,fred,8238,2004-01-01,2026-07-21,ok
 FEDFUNDS,federal funds target/rate,fred,270,2004-01-01,2026-06-01,ok
 CPIAUCSL,CPI all urban consumers,fred,269,2004-01-01,2026-06-01,ok
 CPILFESL,core CPI,fred,269,2004-01-01,2026-06-01,ok
@@ -15,8 +15,8 @@ SAHMREALTIME,real-time Sahm Rule recession indicator,fred,269,2004-01-01,2026-06
 ICSA,initial jobless claims,fred,1176,2004-01-03,2026-07-11,ok
 INDPRO,industrial production,fred,270,2004-01-01,2026-06-01,ok
 RSAFS,advance retail sales,fred,270,2004-01-01,2026-06-01,ok
-NFCI,Chicago Fed National Financial Conditions Index,fred,1176,2004-01-02,2026-07-10,ok
-BAMLH0A0HYM2,high yield option-adjusted spread,fred,785,2023-07-24,2026-07-20,ok
-BAA10Y,BAA minus 10Y Treasury spread,fred,5635,2004-01-02,2026-07-20,ok
-VIXCLS,CBOE VIX close,fred,5704,2004-01-02,2026-07-20,ok
+NFCI,Chicago Fed National Financial Conditions Index,fred,1177,2004-01-02,2026-07-17,ok
+BAMLH0A0HYM2,high yield option-adjusted spread,fred,786,2023-07-24,2026-07-21,ok
+BAA10Y,BAA minus 10Y Treasury spread,fred,5636,2004-01-02,2026-07-21,ok
+VIXCLS,CBOE VIX close,fred,5705,2004-01-02,2026-07-21,ok
 USREC,NBER recession indicator,fred,270,2004-01-01,2026-06-01,ok
