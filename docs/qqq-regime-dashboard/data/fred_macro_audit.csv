@@ -1,10 +1,10 @@
 series_id,description,source,rows,first_date,last_date,status
-DGS2,2Y Treasury yield,fred,5642,2004-01-02,2026-07-22,ok
-DGS10,10Y Treasury yield,fred,5642,2004-01-02,2026-07-22,ok
-DFII10,10Y TIPS real yield,fred,5642,2004-01-02,2026-07-22,ok
-T5YIE,5Y inflation breakeven,fred,5643,2004-01-02,2026-07-23,ok
-T10YIE,10Y inflation breakeven,fred,5643,2004-01-02,2026-07-23,ok
-DFF,effective fed funds rate,fred,8239,2004-01-01,2026-07-22,ok
+DGS2,2Y Treasury yield,fred,5643,2004-01-02,2026-07-23,ok
+DGS10,10Y Treasury yield,fred,5643,2004-01-02,2026-07-23,ok
+DFII10,10Y TIPS real yield,fred,5643,2004-01-02,2026-07-23,ok
+T5YIE,5Y inflation breakeven,fred,5644,2004-01-02,2026-07-24,ok
+T10YIE,10Y inflation breakeven,fred,5644,2004-01-02,2026-07-24,ok
+DFF,effective fed funds rate,fred,8240,2004-01-01,2026-07-23,ok
 FEDFUNDS,federal funds target/rate,fred,270,2004-01-01,2026-06-01,ok
 CPIAUCSL,CPI all urban consumers,fred,269,2004-01-01,2026-06-01,ok
 CPILFESL,core CPI,fred,269,2004-01-01,2026-06-01,ok
@@ -16,7 +16,7 @@ ICSA,initial jobless claims,fred,1177,2004-01-03,2026-07-18,ok
 INDPRO,industrial production,fred,270,2004-01-01,2026-06-01,ok
 RSAFS,advance retail sales,fred,270,2004-01-01,2026-06-01,ok
 NFCI,Chicago Fed National Financial Conditions Index,fred,1177,2004-01-02,2026-07-17,ok
-BAMLH0A0HYM2,high yield option-adjusted spread,fred,787,2023-07-24,2026-07-22,ok
-BAA10Y,BAA minus 10Y Treasury spread,fred,5637,2004-01-02,2026-07-22,ok
-VIXCLS,CBOE VIX close,fred,5706,2004-01-02,2026-07-22,ok
+BAMLH0A0HYM2,high yield option-adjusted spread,fred,787,2023-07-25,2026-07-23,ok
+BAA10Y,BAA minus 10Y Treasury spread,fred,5638,2004-01-02,2026-07-23,ok
+VIXCLS,CBOE VIX close,fred,5707,2004-01-02,2026-07-23,ok
 USREC,NBER recession indicator,fred,270,2004-01-01,2026-06-01,ok

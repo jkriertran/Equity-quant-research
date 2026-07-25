@@ -1,10 +1,10 @@
 check,value,pass,note
-probability_rows_sum_to_one,1.3322676295501878e-15,True,max absolute row probability sum error
+probability_rows_sum_to_one,3.4416913763379853e-15,True,max absolute row probability sum error
 transition_rows_sum_to_one_1p,1.1102230246251565e-16,True,max absolute transition row sum error on non-empty rows
-transition_rows_sum_to_one_4p,1.1102230246251565e-16,True,max absolute transition row sum error on non-empty rows
+transition_rows_sum_to_one_4p,0.0,True,max absolute transition row sum error on non-empty rows
 transition_rows_sum_to_one_13p,1.1102230246251565e-16,True,max absolute transition row sum error on non-empty rows
-transition_rows_sum_to_one_26p,0.0,True,max absolute transition row sum error on non-empty rows
-regime_min_frequency_target,0.09957081545064378,True,target minimum frequency is 5%
+transition_rows_sum_to_one_26p,1.1102230246251565e-16,True,max absolute transition row sum error on non-empty rows
+regime_min_frequency_target,0.05407725321888412,True,target minimum frequency is 5%
 no_target_columns_used,0.0,True,model feature list excludes target/future columns
-gmm_seed,64.0,True,selected seed after retrying for regime balance
+gmm_seed,72.0,True,selected seed after retrying for regime balance
 gmm_covariance_type,,True,selected covariance type: full
